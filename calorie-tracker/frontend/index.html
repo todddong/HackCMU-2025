@@ -44,36 +44,147 @@
             font-size: 1.1em;
         }
 
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 20px;
+        .calories-section {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .calories-title {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .calories-formula {
+            color: #7f8c8d;
+            font-size: 1.1em;
             margin-bottom: 30px;
         }
 
-        .stat-card {
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .circular-progress {
+            position: relative;
+            width: 200px;
+            height: 200px;
+        }
+
+        .progress-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                #3498db 0deg 0deg,
+                #e67e22 0deg 0deg,
+                #ecf0f1 0deg 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .progress-circle::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 80%;
             background: white;
-            border-radius: 15px;
-            padding: 25px;
+            border-radius: 50%;
+        }
+
+        .progress-content {
+            position: relative;
+            z-index: 1;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
         }
 
-        .stat-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .stat-number {
-            font-size: 2.5em;
+        .remaining-calories {
+            font-size: 3em;
             font-weight: bold;
-            color: #3498db;
-            margin-bottom: 5px;
+            color: #2c3e50;
+            margin: 0;
         }
 
-        .stat-label {
+        .remaining-label {
+            font-size: 1.2em;
             color: #7f8c8d;
-            font-size: 1em;
+            margin: 0;
+        }
+
+        .calorie-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .breakdown-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+        }
+
+        .breakdown-label {
+            flex: 1;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .breakdown-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .goal-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .goal-input input {
+            padding: 8px 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 5px;
+            width: 100px;
+        }
+
+        .goal-input button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .goal-input button:hover {
+            background: #2980b9;
         }
 
         .main-content {
@@ -303,8 +414,24 @@
                 font-size: 2em;
             }
             
-            .stats-grid {
-                grid-template-columns: 1fr;
+            .calories-section {
+                flex-direction: column;
+                text-align: center;
+                gap: 30px;
+            }
+            
+            .progress-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .circular-progress {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .remaining-calories {
+                font-size: 2.5em;
             }
         }
     </style>
@@ -316,18 +443,40 @@
             <p>Track your meals and stay healthy with AI-powered calorie estimation</p>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="totalCalories">0</div>
-                <div class="stat-label">Total Calories</div>
+        <div class="calories-section">
+            <div>
+                <h2 class="calories-title">Calories</h2>
+                <p class="calories-formula">Remaining = Goal - Food</p>
+                
+                <div class="goal-input">
+                    <label>Daily Goal:</label>
+                    <input type="number" id="dailyGoal" value="1200" min="500" max="5000">
+                    <button onclick="updateGoal()">Update</button>
+                </div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="totalMeals">0</div>
-                <div class="stat-label">Total Meals</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number" id="avgCalories">0</div>
-                <div class="stat-label">Avg per Meal</div>
+            
+            <div class="progress-container">
+                <div class="circular-progress">
+                    <div class="progress-circle" id="progressCircle">
+                        <div class="progress-content">
+                            <div class="remaining-calories" id="remainingCalories">1200</div>
+                            <div class="remaining-label">Remaining</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="calorie-breakdown">
+                    <div class="breakdown-item">
+                        <div class="breakdown-icon">🏁</div>
+                        <div class="breakdown-label">Base Goal</div>
+                        <div class="breakdown-value" id="baseGoal">1,200</div>
+                    </div>
+                    <div class="breakdown-item">
+                        <div class="breakdown-icon">🍽️</div>
+                        <div class="breakdown-label">Food</div>
+                        <div class="breakdown-value" id="foodCalories">0</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -394,6 +543,7 @@
         // Global variables
         let meals = [];
         let stats = { total_calories: 0, total_meals: 0, average_calories: 0 };
+        let dailyGoal = 1200;
 
         // Initialize the app
         document.addEventListener('DOMContentLoaded', function() {
@@ -439,9 +589,40 @@
 
         // Update statistics display
         function updateStats() {
-            document.getElementById('totalCalories').textContent = stats.total_calories;
-            document.getElementById('totalMeals').textContent = stats.total_meals;
-            document.getElementById('avgCalories').textContent = stats.average_calories;
+            const foodCalories = stats.total_calories;
+            const remaining = Math.max(0, dailyGoal - foodCalories);
+            const progressPercentage = Math.min(100, (foodCalories / dailyGoal) * 100);
+            
+            // Update circular progress bar
+            updateCircularProgress(progressPercentage);
+            
+            // Update breakdown values
+            document.getElementById('baseGoal').textContent = dailyGoal.toLocaleString();
+            document.getElementById('foodCalories').textContent = foodCalories.toLocaleString();
+            document.getElementById('remainingCalories').textContent = remaining.toLocaleString();
+        }
+
+        // Update circular progress bar
+        function updateCircularProgress(percentage) {
+            const progressCircle = document.getElementById('progressCircle');
+            const degrees = (percentage / 100) * 360;
+            
+            progressCircle.style.background = `conic-gradient(
+                #3498db 0deg ${degrees}deg,
+                #ecf0f1 ${degrees}deg 360deg
+            )`;
+        }
+
+        // Update daily goal
+        function updateGoal() {
+            const newGoal = parseInt(document.getElementById('dailyGoal').value);
+            if (newGoal >= 500 && newGoal <= 5000) {
+                dailyGoal = newGoal;
+                updateStats();
+                showSuccess('Daily goal updated!');
+            } else {
+                showError('Please enter a goal between 500 and 5000 calories');
+            }
         }
 
         // Display meals in the UI
