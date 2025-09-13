@@ -6,7 +6,7 @@
     <title>Calorie Tracker - Track Your Calories with AI</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -21,171 +21,510 @@
             color: #ffffff;
             line-height: 1.6;
             font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 107, 53, 0.05) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(255, 107, 53, 0.08) 0%, transparent 50%);
+            animation: backgroundShift 20s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #ff6b35;
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
 
-        /* Hero Section */
-        .hero-section {
-            background: #1a1a1a;
-            border-radius: 20px;
-            padding: 80px 40px;
-            margin-bottom: 60px;
-            border: 1px solid #333;
-            text-align: center;
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 20px 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
         }
 
-        .hero-title {
-            font-size: 3.5em;
-            font-weight: 300;
-            margin-bottom: 20px;
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8em;
+            font-weight: 700;
             background: linear-gradient(135deg, #ff6b35, #e55a2b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 400;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b35;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #ff6b35;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 120px 0 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-title {
+            font-size: 4.5em;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #ff6b35, #e55a2b, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            from {
+                filter: drop-shadow(0 0 20px rgba(255, 107, 53, 0.3));
+            }
+            to {
+                filter: drop-shadow(0 0 40px rgba(255, 107, 53, 0.6));
+            }
+        }
+
         .hero-subtitle {
-            font-size: 1.3em;
+            font-size: 1.4em;
             font-weight: 300;
-            margin-bottom: 40px;
-            opacity: 0.8;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 50px;
+            opacity: 0.9;
+            line-height: 1.7;
         }
 
         .cta-button {
             display: inline-block;
-            padding: 18px 40px;
+            padding: 20px 50px;
             background: linear-gradient(135deg, #ff6b35, #e55a2b);
             color: white;
             text-decoration: none;
             border-radius: 50px;
-            font-weight: 500;
-            font-size: 1.1em;
-            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1.2em;
+            transition: all 0.4s ease;
             border: none;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
         }
 
         .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.4);
         }
 
         /* Features Section */
         .features-section {
-            background: #1a1a1a;
-            border-radius: 20px;
-            padding: 80px 40px;
-            border: 1px solid #333;
+            padding: 120px 0;
+            position: relative;
         }
 
         .features-title {
             text-align: center;
-            font-size: 2.5em;
-            font-weight: 300;
-            margin-bottom: 60px;
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 80px;
             color: #ffffff;
+            position: relative;
+        }
+
+        .features-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            border-radius: 2px;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 60px;
+            margin-top: 80px;
         }
 
         .feature-card {
-            background: #2d2d2d;
-            padding: 40px;
+            background: rgba(26, 26, 26, 0.8);
+            padding: 50px 40px;
             border-radius: 20px;
-            border: 1px solid #444;
+            border: 1px solid rgba(255, 107, 53, 0.2);
             text-align: center;
-            transition: transform 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #ff6b35, #e55a2b);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
         }
 
         .feature-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px);
+            border-color: rgba(255, 107, 53, 0.5);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.1);
         }
 
-        .feature-icon {
-            font-size: 4em;
-            margin-bottom: 20px;
-            display: block;
+        .feature-image {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 30px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-image img {
+            width: 50px;
+            height: 50px;
+            filter: brightness(0) invert(1);
         }
 
         .feature-title {
-            font-size: 1.5em;
-            font-weight: 500;
-            margin-bottom: 15px;
+            font-size: 1.6em;
+            font-weight: 600;
+            margin-bottom: 20px;
             color: #ff6b35;
         }
 
         .feature-description {
             font-size: 1.1em;
             opacity: 0.8;
-            line-height: 1.6;
+            line-height: 1.7;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            padding: 120px 0;
+            background: rgba(26, 26, 26, 0.5);
+            backdrop-filter: blur(20px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 60px;
+            text-align: center;
+        }
+
+        .stat-item {
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: 800;
+            color: #ff6b35;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.8;
+            font-weight: 400;
         }
 
         /* Responsive Design */
         @media (max-width: 768px) {
             .hero-title {
-                font-size: 2.5em;
+                font-size: 3em;
             }
             
             .hero-subtitle {
-                font-size: 1.1em;
+                font-size: 1.2em;
             }
             
             .features-grid {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 40px;
             }
             
-            .hero-section,
-            .features-section {
-                padding: 60px 20px;
+            .nav-links {
+                display: none;
+            }
+            
+            .features-title {
+                font-size: 2.5em;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Hero Section -->
-        <div class="hero-section">
+    <!-- Animated Background -->
+    <div class="animated-bg"></div>
+    
+    <!-- Floating Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="logo">CalorieTracker</div>
+            <ul class="nav-links">
+                <li><a href="#features">Features</a></li>
+                <li><a href="#stats">Stats</a></li>
+                <li><a href="/login">Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
             <h1 class="hero-title">Track Your Calories with AI</h1>
-            <p class="hero-subtitle">Transform your health journey with our intelligent calorie tracking app. Upload photos, get instant calorie estimates, and achieve your fitness goals.</p>
+            <p class="hero-subtitle">Transform your health journey with our intelligent calorie tracking app. Upload photos, get instant calorie estimates, and achieve your fitness goals with cutting-edge AI technology.</p>
             <a href="/login" class="cta-button">Start Tracking Now</a>
         </div>
+    </section>
 
-        <!-- Features Section -->
-        <div class="features-section">
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+        <div class="container">
             <h2 class="features-title">Why Choose Our Calorie Tracker?</h2>
             <div class="features-grid">
                 <div class="feature-card">
-                    <span class="feature-icon">🤖</span>
+                    <div class="feature-image">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTI0IDRDMzUuMDQ1NyA0IDQ0IDEyLjk1NDMgNDQgMjRDMzUuMDQ1NyA0NCAyNCAzNS4wNDU3IDI0IDI0QzEyLjk1NDMgMjQgNCAxNS4wNDU3IDQgMjRDNCAxMi45NTQzIDEyLjk1NDMgNCAyNCA0WiIgZmlsbD0iI0ZGNkIzNSIvPgo8cGF0aCBkPSJNMjQgMTJDMjcuMzEzNyAxMiAzMCAxNC42ODYzIDMwIDE4QzMwIDIxLjMxMzcgMjcuMzEzNyAyNCAyNCAyNEMyMC42ODYzIDI0IDE4IDIxLjMxMzcgMTggMThDMTggMTQuNjg2MyAyMC42ODYzIDEyIDI0IDEyWiIgZmlsbD0iI0ZGRkZGRiIvPgo8cGF0aCBkPSJNMjQgMjhDMjcuMzEzNyAyOCAzMCAzMC42ODYzIDMwIDM0QzMwIDM3LjMxMzcgMjcuMzEzNyA0MCAyNCA0MEMyMC42ODYzIDQwIDE4IDM3LjMxMzcgMTggMzRDMjggMzAuNjg2MyAyMC42ODYzIDI4IDI0IDI4WiIgZmlsbD0iI0ZGRkZGRiIvPgo8L3N2Zz4K" alt="AI Icon">
+                    </div>
                     <h3 class="feature-title">AI-Powered Estimation</h3>
-                    <p class="feature-description">Simply upload a photo of your meal and our AI will instantly estimate the calories for you.</p>
+                    <p class="feature-description">Simply upload a photo of your meal and our advanced AI will instantly estimate the calories, protein, carbs, and fat content with remarkable accuracy.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <span class="feature-icon">📊</span>
+                    <div class="feature-image">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTggNEM2Ljg5NTQzIDQgNiA0Ljg5NTQzIDYgNlY0MkM2IDQzLjEwNDYgNi44OTU0MyA0NCA4IDQ0SDQwQzQxLjEwNDYgNDQgNDIgNDMuMTA0NiA0MiA0MlY2QzQyIDQuODk1NDMgNDEuMTA0NiA0IDQwIDRIOFoiIGZpbGw9IiNGRjZCMzUiLz4KPHBhdGggZD0iTTEyIDEySDM2VjE2SDEyVjEyWiIgZmlsbD0iI0ZGRkZGRiIvPgo8cGF0aCBkPSJNMTIgMjBIMzJWMjRIMTJWMjBaIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik0xMiAyOEgyOFYzMkgxMlYyOFoiIGZpbGw9IiNGRkZGRkYiLz4KPHBhdGggZD0iTTEyIDM2SDI0VjQwSDEyVjM2WiIgZmlsbD0iI0ZGRkZGRiIvPgo8L3N2Zz4K" alt="Analytics Icon">
+                    </div>
                     <h3 class="feature-title">Real-Time Progress</h3>
-                    <p class="feature-description">Track your daily progress with beautiful visualizations and detailed statistics.</p>
+                    <p class="feature-description">Track your daily progress with beautiful circular visualizations, detailed statistics, and comprehensive macro tracking that updates in real-time.</p>
                 </div>
                 
                 <div class="feature-card">
-                    <span class="feature-icon">📱</span>
+                    <div class="feature-image">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEwIDZDMTAgNC44OTU0MyAxMC44OTU0IDQgMTIgNEgzNkMzNy4xMDQ2IDQgMzggNC44OTU0MyAzOCA2VjQyQzM4IDQzLjEwNDYgMzcuMTA0NiA0NCAzNiA0NEgxMkMxMC44OTU0IDQ0IDEwIDQzLjEwNDYgMTAgNDJWNloiIGZpbGw9IiNGRjZCMzUiLz4KPHBhdGggZD0iTTE0IDEwSDM0VjE0SDE0VjEwWiIgZmlsbD0iI0ZGRkZGRiIvPgo8cGF0aCBkPSJNMTQgMThIMzBWMjJIMTRWMThaIiBmaWxsPSIjRkZGRkZGIi8+CjxwYXRoIGQ9Ik0xNCAyNkgyNlYzMEgxNFYyNloiIGZpbGw9IiNGRkZGRkYiLz4KPHBhdGggZD0iTTE0IDM0SDIyVjM4SDE0VjM0WiIgZmlsbD0iI0ZGRkZGRiIvPgo8L3N2Zz4K" alt="Mobile Icon">
+                    </div>
                     <h3 class="feature-title">Simple & Intuitive</h3>
-                    <p class="feature-description">Clean, MyFitnessPal-inspired interface that makes calorie tracking effortless.</p>
+                    <p class="feature-description">Clean, modern interface inspired by the best fitness apps. Intuitive design that makes calorie tracking effortless and enjoyable.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section" id="stats">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">99%</div>
+                    <div class="stat-label">Accuracy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">10K+</div>
+                    <div class="stat-label">Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1M+</div>
+                    <div class="stat-label">Photos Analyzed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">AI Processing</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize particles on load
+        window.addEventListener('load', createParticles);
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('.nav');
+            if (window.scrollY > 100) {
+                nav.style.background = 'rgba(0, 0, 0, 0.95)';
+            } else {
+                nav.style.background = 'rgba(0, 0, 0, 0.8)';
+            }
+        });
+    </script>
 </body>
 </html>
