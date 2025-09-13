@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 
 import models, schemas, database, auth
 from calorie_estimator.mock_estimator import MockCalorieEstimator
+from calorie_estimator.enhanced_estimator import EnhancedCalorieEstimator
 from usda_service import usda_service
 
 # Create database tables
@@ -24,8 +25,15 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 # Mount static files
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
-# Initialize calorie estimator
-calorie_estimator = MockCalorieEstimator()
+# Initialize calorie estimator with fallback
+try:
+    # Try to use enhanced AI estimator if OpenAI API key is available
+    calorie_estimator = EnhancedCalorieEstimator()
+    print("✅ Enhanced AI calorie estimator initialized successfully")
+except Exception as e:
+    # Fallback to mock estimator if OpenAI API key is not available
+    calorie_estimator = MockCalorieEstimator()
+    print(f"⚠️  Using mock calorie estimator (Enhanced AI not available: {e})")
 
 # Security
 security = HTTPBearer()

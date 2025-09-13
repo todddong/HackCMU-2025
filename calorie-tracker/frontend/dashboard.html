@@ -437,6 +437,27 @@
             display: none;
         }
 
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loading .spinner {
+            border: 3px solid #333;
+            border-top: 3px solid #ff6b35;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
         /* Search Section */
         .search-section {
             background: #1a1a1a;
@@ -786,7 +807,7 @@
         <!-- Search Section -->
         <div class="search-section">
             <h2 class="section-title">🔍 Search Foods</h2>
-            <p class="search-description">Search for branded foods and ingredients using our USDA database integration.</p>
+            <p class="search-description">Search for branded foods and ingredients using our AI-powered USDA database integration.</p>
             
             <div class="search-container">
                 <div class="search-box">
@@ -808,7 +829,7 @@
             
             <div class="search-loading" id="searchLoading">
                 <div style="border: 2px solid #333; border-top: 2px solid #ff6b35; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-                <p>Searching foods...</p>
+                <p>🤖 AI-powered food search in progress...</p>
             </div>
             
             <div class="search-error" id="searchError"></div>
@@ -825,6 +846,10 @@
                 
                 <div class="error" id="errorMessage"></div>
                 <div class="success" id="successMessage"></div>
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>🤖 AI is analyzing your photo...</p>
+                </div>
                 
                 <form id="mealForm">
                     <div class="form-group">
@@ -868,7 +893,7 @@
                     </div>
 
                     <button type="button" class="btn btn-secondary" onclick="estimateCalories()">
-                        🤖 Estimate Calories from Photo
+                        🤖 AI-Powered Calorie Estimation
                     </button>
 
                     <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">
@@ -1135,6 +1160,10 @@
             const formData = new FormData();
             formData.append('photo', photoInput.files[0]);
             
+            // Show loading indicator
+            showLoading(true);
+            hideMessages();
+            
             try {
                 const response = await fetch('/api/estimate-calories/', {
                     method: 'POST',
@@ -1144,13 +1173,15 @@
                 if (response.ok) {
                     const data = await response.json();
                     document.getElementById('calories').value = data.estimated_calories;
-                    showSuccessMessage(`Estimated ${data.estimated_calories} calories`);
+                    showSuccessMessage(`🤖 AI estimated ${data.estimated_calories} calories - ${data.description}`);
                 } else {
                     showErrorMessage('Failed to estimate calories');
                 }
             } catch (error) {
                 console.error('Error estimating calories:', error);
                 showErrorMessage('Network error. Please try again.');
+            } finally {
+                showLoading(false);
             }
         }
 
@@ -1327,6 +1358,17 @@
             setTimeout(() => {
                 errorMessage.style.display = 'none';
             }, 3000);
+        }
+
+        // Show loading indicator
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        // Hide all messages
+        function hideMessages() {
+            errorMessage.style.display = 'none';
+            successMessage.style.display = 'none';
         }
 
         // Logout
