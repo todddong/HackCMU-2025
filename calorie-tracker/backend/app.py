@@ -8,7 +8,7 @@ import shutil
 from datetime import datetime
 
 import models, schemas, database
-from calorie_estimator.openai_estimator import OpenAICalorieEstimator
+from calorie_estimator.enhanced_estimator import EnhancedCalorieEstimator
 
 # Create database tables
 models.Base.metadata.create_all(bind=database.engine)
@@ -24,7 +24,8 @@ app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 # Initialize calorie estimator
 try:
-    calorie_estimator = OpenAICalorieEstimator()
+    calorie_estimator = EnhancedCalorieEstimator()
+    print("✅ Enhanced AI estimator initialized (OpenAI GPT-4o-mini + USDA data)")
 except ValueError as e:
     print(f"Warning: {e}")
     print("Falling back to mock estimator. Set OPENAI_API_KEY environment variable to use real AI analysis.")

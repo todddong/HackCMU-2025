@@ -67,9 +67,9 @@ class OpenAICalorieEstimator(CalorieEstimator):
             DESCRIPTION: [brief description of the food items and portions]
             """
             
-            # Make the API call
+            # Make the API call using GPT-4o-mini for cost efficiency
             response = self.client.chat.completions.create(
-                model="gpt-4o",
+                model="gpt-4o-mini",
                 messages=[
                     {
                         "role": "user",
