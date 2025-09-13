@@ -31,6 +31,9 @@ class TokenData(BaseModel):
 class MealBase(BaseModel):
     name: str
     calories: float
+    protein: Optional[float] = 0.0
+    carbs: Optional[float] = 0.0
+    fat: Optional[float] = 0.0
     description: Optional[str] = None
 
 class MealCreate(MealBase):
