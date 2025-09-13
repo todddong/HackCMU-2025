@@ -2,6 +2,8 @@ import base64
 import os
 from typing import Tuple
 from openai import OpenAI
+from PIL import Image
+import io
 from .base import CalorieEstimator
 
 class OpenAICalorieEstimator(CalorieEstimator):
@@ -23,6 +25,7 @@ class OpenAICalorieEstimator(CalorieEstimator):
     def encode_image(self, image_path: str) -> str:
         """
         Encode image to base64 string for OpenAI API
+        Converts image to JPEG format to ensure compatibility
         
         Args:
             image_path: Path to the image file
@@ -30,8 +33,28 @@ class OpenAICalorieEstimator(CalorieEstimator):
         Returns:
             Base64 encoded image string
         """
-        with open(image_path, "rb") as image_file:
-            return base64.b64encode(image_file.read()).decode('utf-8')
+        try:
+            # Open and convert image to RGB JPEG format
+            with Image.open(image_path) as img:
+                # Convert to RGB if necessary (handles RGBA, P, etc.)
+                if img.mode in ('RGBA', 'P'):
+                    img = img.convert('RGB')
+                elif img.mode != 'RGB':
+                    img = img.convert('RGB')
+                
+                # Save to bytes buffer as JPEG
+                buffer = io.BytesIO()
+                img.save(buffer, format='JPEG', quality=85, optimize=True)
+                buffer.seek(0)
+                
+                # Encode to base64
+                return base64.b64encode(buffer.getvalue()).decode('utf-8')
+                
+        except Exception as e:
+            # Fallback to original method if PIL fails
+            print(f"Warning: PIL conversion failed ({e}), using original image")
+            with open(image_path, "rb") as image_file:
+                return base64.b64encode(image_file.read()).decode('utf-8')
     
     def estimate_calories(self, image_path: str) -> Tuple[float, str]:
         """
@@ -68,28 +91,37 @@ class OpenAICalorieEstimator(CalorieEstimator):
             """
             
             # Make the API call using GPT-4o-mini for cost efficiency
-            response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {
-                        "role": "user",
-                        "content": [
-                            {
-                                "type": "text",
-                                "text": prompt
-                            },
-                            {
-                                "type": "image_url",
-                                "image_url": {
-                                    "url": f"data:image/jpeg;base64,{base64_image}"
+            try:
+                response = self.client.chat.completions.create(
+                    model="gpt-4o-mini",
+                    messages=[
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": prompt
+                                },
+                                {
+                                    "type": "image_url",
+                                    "image_url": {
+                                        "url": f"data:image/jpeg;base64,{base64_image}"
+                                    }
                                 }
-                            }
-                        ]
-                    }
-                ],
-                max_tokens=500,
-                temperature=0.3
-            )
+                            ]
+                        }
+                    ],
+                    max_tokens=500,
+                    temperature=0.3
+                )
+            except Exception as e:
+                error_msg = str(e)
+                if "rate_limit_exceeded" in error_msg or "429" in error_msg:
+                    return 0.0, "Rate limit exceeded. Please wait a moment and try again. Consider upgrading your OpenAI plan for higher limits."
+                elif "invalid_image_format" in error_msg or "400" in error_msg:
+                    return 0.0, "Image format not supported. Please use PNG, JPEG, GIF, or WebP format."
+                else:
+                    return 0.0, f"Error analyzing image: {error_msg}"
             
             # Parse the response
             response_text = response.choices[0].message.content

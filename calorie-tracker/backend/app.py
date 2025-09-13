@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
@@ -7,8 +8,13 @@ import os
 import shutil
 from datetime import datetime
 
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 import models, schemas, database
-from calorie_estimator.enhanced_estimator import EnhancedCalorieEstimator
+from calorie_estimator.openai_estimator import OpenAICalorieEstimator
 
 # Create database tables
 models.Base.metadata.create_all(bind=database.engine)
@@ -24,11 +30,17 @@ app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 # Initialize calorie estimator
 try:
-    calorie_estimator = EnhancedCalorieEstimator()
-    print("✅ Enhanced AI estimator initialized (OpenAI GPT-4o-mini + USDA data)")
+    calorie_estimator = OpenAICalorieEstimator()
+    print("✅ OpenAI AI estimator initialized (GPT-4o-mini)")
+    print("🔑 API Key loaded from .env file")
 except ValueError as e:
     print(f"Warning: {e}")
     print("Falling back to mock estimator. Set OPENAI_API_KEY environment variable to use real AI analysis.")
+    from calorie_estimator.mock_estimator import MockCalorieEstimator
+    calorie_estimator = MockCalorieEstimator()
+except Exception as e:
+    print(f"Error initializing OpenAI estimator: {e}")
+    print("Falling back to mock estimator.")
     from calorie_estimator.mock_estimator import MockCalorieEstimator
     calorie_estimator = MockCalorieEstimator()
 
