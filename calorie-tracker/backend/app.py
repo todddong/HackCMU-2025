@@ -8,7 +8,7 @@ import shutil
 from datetime import datetime
 
 import models, schemas, database
-from calorie_estimator.mock_estimator import MockCalorieEstimator
+from calorie_estimator.openai_estimator import OpenAICalorieEstimator
 
 # Create database tables
 models.Base.metadata.create_all(bind=database.engine)
@@ -23,12 +23,20 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
 # Initialize calorie estimator
-calorie_estimator = MockCalorieEstimator()
+try:
+    calorie_estimator = OpenAICalorieEstimator()
+except ValueError as e:
+    print(f"Warning: {e}")
+    print("Falling back to mock estimator. Set OPENAI_API_KEY environment variable to use real AI analysis.")
+    from calorie_estimator.mock_estimator import MockCalorieEstimator
+    calorie_estimator = MockCalorieEstimator()
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root():
     """Serve the main HTML page"""
-    return FileResponse("../frontend/index.html")
+    import os
+    frontend_path = os.path.join(os.path.dirname(__file__), "..", "frontend", "index.html")
+    return FileResponse(frontend_path)
 
 @app.post("/api/meals/", response_model=schemas.Meal)
 async def create_meal(

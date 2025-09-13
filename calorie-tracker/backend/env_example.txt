@@ -1,0 +1,10 @@
+# OpenAI API Configuration
+# Get your API key from: https://platform.openai.com/api-keys
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Database Configuration (optional - defaults to SQLite)
+# DATABASE_URL=sqlite:///./calorie_tracker.db
+
+# Server Configuration (optional)
+# HOST=0.0.0.0
+# PORT=8000
