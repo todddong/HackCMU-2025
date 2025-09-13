@@ -1192,12 +1192,18 @@
             const remaining = Math.max(0, dailyGoal - foodCalories);
             const progressPercentage = Math.min(100, (foodCalories / dailyGoal) * 100);
             
+            // Calculate macro goals based on calorie goal
+            // Protein: 35% of calories (4 calories per gram)
+            const proteinGoal = (dailyGoal * 0.35) / 4;
+            // Carbs: 65% of calories (4 calories per gram)
+            const carbsGoal = (dailyGoal * 0.65) / 4;
+            
             // Update main circular progress bar
             updateCircularProgress(progressPercentage);
             
-            // Update macro circles
-            updateMacroCircle('proteinCircle', totalProtein, 150); // 150g protein goal
-            updateMacroCircle('carbsCircle', totalCarbs, 200); // 200g carbs goal
+            // Update macro circles with dynamic goals
+            updateMacroCircle('proteinCircle', totalProtein, proteinGoal);
+            updateMacroCircle('carbsCircle', totalCarbs, carbsGoal);
             
             // Update breakdown values
             document.getElementById('baseGoal').textContent = dailyGoal.toLocaleString();
