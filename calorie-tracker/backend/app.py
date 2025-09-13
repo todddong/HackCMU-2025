@@ -12,6 +12,7 @@ import models, schemas, database, auth
 from calorie_estimator.mock_estimator import MockCalorieEstimator
 from calorie_estimator.enhanced_estimator import EnhancedCalorieEstimator
 from usda_service import usda_service
+from gpt_search_wrapper import gpt_search_wrapper
 
 # Create database tables
 models.Base.metadata.create_all(bind=database.engine)
@@ -258,18 +259,28 @@ async def get_stats(
 async def search_foods(
     query: str = Query(..., description="Food search query"),
     page_size: int = Query(20, description="Number of results to return"),
-    data_type: Optional[str] = Query(None, description="Filter by data type (Foundation, SR Legacy, Survey, Branded, Experimental)")
+    data_type: Optional[str] = Query(None, description="Filter by data type (Foundation, SR Legacy, Survey, Branded, Experimental)"),
+    use_gpt: bool = Query(True, description="Use GPT-enhanced search (default: True)")
 ):
-    """Search for foods using USDA FoodData Central API"""
+    """Search for foods using GPT-enhanced USDA FoodData Central API"""
     if not query or len(query.strip()) < 2:
         raise HTTPException(status_code=400, detail="Query must be at least 2 characters long")
     
     try:
-        foods = await usda_service.search_foods(query.strip(), page_size, data_type)
+        if use_gpt:
+            # Use GPT-enhanced search
+            foods = await gpt_search_wrapper.search_foods(query.strip(), page_size, data_type)
+            print(f"🤖 GPT-enhanced search for: {query}")
+        else:
+            # Use traditional USDA search
+            foods = await usda_service.search_foods(query.strip(), page_size, data_type)
+            print(f"🔍 Traditional USDA search for: {query}")
+        
         return {
             "query": query,
             "results": foods,
-            "total_results": len(foods)
+            "total_results": len(foods),
+            "search_type": "gpt_enhanced" if use_gpt else "traditional_usda"
         }
     except Exception as e:
         print(f"Error searching foods: {e}")

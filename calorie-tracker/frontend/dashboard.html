@@ -160,6 +160,24 @@
             gap: 20px;
         }
 
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .main-progress {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .macro-progress {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
         .macro-circle {
             display: flex;
             justify-content: center;
@@ -167,6 +185,23 @@
 
         .circular-progress {
             position: relative;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .circular-progress.small {
+            width: 120px;
+            height: 120px;
+        }
+
+        .progress-circle {
+            position: absolute;
             width: 200px;
             height: 200px;
             border-radius: 50%;
@@ -180,12 +215,12 @@
             transition: all 0.3s ease;
         }
 
-        .circular-progress.small {
+        .circular-progress.small .progress-circle {
             width: 120px;
             height: 120px;
         }
 
-        .progress-circle {
+        .progress-inner {
             width: 160px;
             height: 160px;
             border-radius: 50%;
@@ -194,11 +229,103 @@
             align-items: center;
             justify-content: center;
             flex-direction: column;
+            z-index: 2;
+            position: relative;
         }
 
-        .circular-progress.small .progress-circle {
+        .circular-progress.small .progress-inner {
             width: 100px;
             height: 100px;
+        }
+
+        .progress-content {
+            text-align: center;
+        }
+
+        .remaining-calories {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #ff6b35;
+            margin-bottom: 5px;
+        }
+
+        .remaining-label {
+            color: #ff6b35;
+            font-size: 0.9em;
+        }
+
+        .macro-value {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #ff6b35;
+            margin-bottom: 5px;
+        }
+
+        .macro-label {
+            color: #ff6b35;
+            font-size: 0.8em;
+        }
+
+        .calorie-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .breakdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .breakdown-icon {
+            font-size: 1.5em;
+            margin-bottom: 8px;
+        }
+
+        .breakdown-label {
+            color: #999;
+            font-size: 0.8em;
+            margin-bottom: 5px;
+        }
+
+        .breakdown-value {
+            color: #ffffff;
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .progress-container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .main-progress {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .macro-progress {
+                flex-direction: row;
+                justify-content: center;
+                gap: 30px;
+            }
+            
+            .circular-progress {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .remaining-calories {
+                font-size: 2em;
+            }
+            
+            .macro-value {
+                font-size: 1.5em;
+            }
         }
 
         .progress-content {
@@ -583,6 +710,43 @@
             margin-bottom: 10px;
         }
 
+        .gpt-confidence {
+            color: #4CAF50;
+            font-size: 0.8em;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .gpt-highlights {
+            background: #1a3d1a;
+            border: 1px solid #2d5a2d;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 8px 0;
+            color: #90EE90;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .gpt-reasoning {
+            background: #2d1a3d;
+            border: 1px solid #5a2d5a;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 8px 0;
+            color: #DDA0DD;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .serving-total {
+            color: #ff6b35;
+            font-weight: 500;
+            font-size: 0.9em;
+            margin-top: 5px;
+            text-align: center;
+        }
+
         .food-nutrition {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -756,7 +920,8 @@
             <div class="progress-container">
                 <div class="main-progress">
                     <div class="circular-progress">
-                        <div class="progress-circle" id="progressCircle">
+                        <div class="progress-circle" id="progressCircle"></div>
+                        <div class="progress-inner">
                             <div class="progress-content">
                                 <div class="remaining-calories" id="remainingCalories">1200</div>
                                 <div class="remaining-label">Remaining</div>
@@ -781,7 +946,8 @@
                 <div class="macro-progress">
                     <div class="macro-circle">
                         <div class="circular-progress small">
-                            <div class="progress-circle" id="proteinCircle">
+                            <div class="progress-circle" id="proteinCircle"></div>
+                            <div class="progress-inner">
                                 <div class="progress-content">
                                     <div class="macro-value" id="proteinValue">0</div>
                                     <div class="macro-label">Protein (g)</div>
@@ -792,7 +958,8 @@
                     
                     <div class="macro-circle">
                         <div class="circular-progress small">
-                            <div class="progress-circle" id="carbsCircle">
+                            <div class="progress-circle" id="carbsCircle"></div>
+                            <div class="progress-inner">
                                 <div class="progress-content">
                                     <div class="macro-value" id="carbsValue">0</div>
                                     <div class="macro-label">Carbs (g)</div>
@@ -807,7 +974,7 @@
         <!-- Search Section -->
         <div class="search-section">
             <h2 class="section-title">🔍 Search Foods</h2>
-            <p class="search-description">Search for branded foods and ingredients using our AI-powered USDA database integration.</p>
+            <p class="search-description">🤖 Search for branded foods and ingredients using our GPT-enhanced AI-powered USDA database integration.</p>
             
             <div class="search-container">
                 <div class="search-box">
@@ -829,7 +996,7 @@
             
             <div class="search-loading" id="searchLoading">
                 <div style="border: 2px solid #333; border-top: 2px solid #ff6b35; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; margin: 0 auto;"></div>
-                <p>🤖 AI-powered food search in progress...</p>
+                <p>🤖 GPT-enhanced AI search in progress...</p>
             </div>
             
             <div class="search-error" id="searchError"></div>
@@ -1200,7 +1367,7 @@
             hideSearchResults();
             
             try {
-                const response = await fetch(`/api/search-foods/?query=${encodeURIComponent(query)}&data_type=${dataType}`);
+                const response = await fetch(`/api/search-foods/?query=${encodeURIComponent(query)}&data_type=${dataType}&use_gpt=true`);
                 const data = await response.json();
                 
                 if (response.ok) {
@@ -1223,6 +1390,22 @@
                 resultsList.innerHTML = '<p style="text-align: center; color: #cccccc; padding: 20px;">No foods found. Try a different search term.</p>';
             } else {
                 resultsList.innerHTML = foods.map(food => createFoodItem(food)).join('');
+                
+                // Add event listeners to all add-to-meal buttons
+                const addToMealButtons = resultsList.querySelectorAll('.add-to-meal-btn');
+                addToMealButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const fdcId = this.getAttribute('data-fdc-id');
+                        const foodName = this.getAttribute('data-food-name');
+                        const calories = parseFloat(this.getAttribute('data-calories'));
+                        const protein = parseFloat(this.getAttribute('data-protein'));
+                        const carbs = parseFloat(this.getAttribute('data-carbs'));
+                        const fat = parseFloat(this.getAttribute('data-fat'));
+                        
+                        console.log('Add to meal button clicked:', {fdcId, foodName, calories});
+                        addFoodToMeal(fdcId, foodName, calories, protein, carbs, fat);
+                    });
+                });
             }
             
             showSearchResults();
@@ -1232,12 +1415,24 @@
             const defaultServing = food.serving_size || '1 serving';
             const servingUnit = defaultServing.includes('g') ? 'g' : 'serving';
             
-            return `
+            
+            // GPT-enhanced features
+            const gptDescription = food.description || food.name;
+            const confidenceScore = food.confidence_score ? `🤖 AI Confidence: ${(food.confidence_score * 100).toFixed(0)}%` : '';
+            const nutritionalHighlights = food.nutritional_highlights && food.nutritional_highlights.length > 0 ? 
+                `<div class="gpt-highlights">🤖 AI Insights: ${food.nutritional_highlights.join(', ')}</div>` : '';
+            const searchReasoning = food.search_reasoning ? 
+                `<div class="gpt-reasoning">💡 ${food.search_reasoning}</div>` : '';
+            
+            const html = `
                 <div class="search-result-item">
-                    <div class="food-name">${food.name}</div>
+                    <div class="food-name">${gptDescription}</div>
                     ${food.brand_owner ? `<div class="food-brand">${food.brand_owner}</div>` : ''}
                     <div class="food-type">${food.data_type}</div>
                     <div class="food-serving">Serving: ${defaultServing}</div>
+                    ${confidenceScore ? `<div class="gpt-confidence">${confidenceScore}</div>` : ''}
+                    ${nutritionalHighlights}
+                    ${searchReasoning}
                     
                     <div class="serving-controls">
                         <div class="serving-label">Adjust serving amount:</div>
@@ -1245,6 +1440,9 @@
                                onchange="recalculateNutrition(this, ${JSON.stringify(food).replace(/"/g, '&quot;')})"
                                oninput="recalculateNutrition(this, ${JSON.stringify(food).replace(/"/g, '&quot;')})">
                         <span class="serving-unit">${servingUnit}</span>
+                        <div class="serving-total" id="serving-total-${food.fdc_id}">
+                            Total: ${food.calories.toFixed(1)} cal
+                        </div>
                     </div>
                     
                     <div class="food-nutrition" id="nutrition-${food.fdc_id}">
@@ -1266,30 +1464,132 @@
                         </div>
                     </div>
                     
-                    <button class="add-to-meal-btn" onclick="addFoodToMealWithServing('${food.name}', ${food.calories}, ${food.protein}, ${food.carbs}, ${food.fat}, '${defaultServing}', 1, '${servingUnit}')">
+                    <button class="add-to-meal-btn" data-fdc-id="${food.fdc_id}" data-food-name="${food.name}" data-calories="${food.calories}" data-protein="${food.protein}" data-carbs="${food.carbs}" data-fat="${food.fat}">
                         Add to Meal
                     </button>
                 </div>
             `;
+            
+            return html;
         }
 
         // Global function to recalculate nutrition based on serving amount
         function recalculateNutrition(input, food) {
             const servingAmount = parseFloat(input.value) || 1;
             const nutritionDiv = document.getElementById(`nutrition-${food.fdc_id}`);
+            const servingTotalDiv = document.getElementById(`serving-total-${food.fdc_id}`);
             
             if (nutritionDiv) {
                 const nutritionValues = nutritionDiv.querySelectorAll('.nutrition-value');
                 if (nutritionValues.length >= 4) {
-                    nutritionValues[0].textContent = (food.calories * servingAmount).toFixed(1);
-                    nutritionValues[1].textContent = (food.protein * servingAmount).toFixed(1) + 'g';
-                    nutritionValues[2].textContent = (food.carbs * servingAmount).toFixed(1) + 'g';
-                    nutritionValues[3].textContent = (food.fat * servingAmount).toFixed(1) + 'g';
+                    const totalCalories = (food.calories * servingAmount).toFixed(1);
+                    const totalProtein = (food.protein * servingAmount).toFixed(1);
+                    const totalCarbs = (food.carbs * servingAmount).toFixed(1);
+                    const totalFat = (food.fat * servingAmount).toFixed(1);
+                    
+                    nutritionValues[0].textContent = totalCalories;
+                    nutritionValues[1].textContent = totalProtein + 'g';
+                    nutritionValues[2].textContent = totalCarbs + 'g';
+                    nutritionValues[3].textContent = totalFat + 'g';
+                    
+                    // Update serving total display
+                    if (servingTotalDiv) {
+                        servingTotalDiv.textContent = `Total: ${totalCalories} cal`;
+                    }
                 }
             }
         }
 
-        // Global function to add food to meal with serving amount (called from search results)
+        // Function to add food to meal form
+        function addFoodToMeal(fdcId, foodName, baseCalories, baseProtein, baseCarbs, baseFat) {
+            console.log('addFoodToMeal called!', {fdcId, foodName, baseCalories});
+            
+            try {
+                // Get the current serving amount from the input field
+                const searchResultItem = document.querySelector(`#nutrition-${fdcId}`).closest('.search-result-item');
+                const servingInput = searchResultItem ? searchResultItem.querySelector('.serving-input') : null;
+                const servingAmount = servingInput ? parseFloat(servingInput.value) || 1 : 1;
+                
+                console.log('Serving amount:', servingAmount);
+                
+                // Calculate total nutrition based on serving amount
+                const totalCalories = baseCalories * servingAmount;
+                const totalProtein = baseProtein * servingAmount;
+                const totalCarbs = baseCarbs * servingAmount;
+                const totalFat = baseFat * servingAmount;
+                
+                // Populate the meal form
+                document.getElementById('mealName').value = foodName;
+                document.getElementById('calories').value = totalCalories.toFixed(1);
+                document.getElementById('protein').value = totalProtein.toFixed(1);
+                document.getElementById('carbs').value = totalCarbs.toFixed(1);
+                document.getElementById('fat').value = totalFat.toFixed(1);
+                document.getElementById('mealDescription').value = `${servingAmount} serving(s)`;
+                
+                // Scroll to the meal form
+                document.querySelector('.add-meal-section').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+                
+                // Show success message
+                showSuccessMessage(`Added "${foodName}" (${servingAmount} serving${servingAmount > 1 ? 's' : ''}) to meal form!`);
+                
+            } catch (error) {
+                console.error('Error adding food to meal:', error);
+                showErrorMessage('Error adding food to meal. Please try again.');
+            }
+        }
+
+        // Global function to add food to meal with current serving amount (called from search results)
+        function addFoodToMealWithCurrentServing(fdcId, foodName, baseCalories, baseProtein, baseCarbs, baseFat, baseServing, servingUnit) {
+            console.log('addFoodToMealWithCurrentServing called with:', arguments);
+            try {
+                // Get the current serving amount from the input field
+                // Find the serving input within the same search result item
+                const nutritionDiv = document.querySelector(`#nutrition-${fdcId}`);
+                if (!nutritionDiv) {
+                    console.error(`Could not find nutrition div with id: nutrition-${fdcId}`);
+                    showErrorMessage('Error: Could not find food item. Please try searching again.');
+                    return;
+                }
+                
+                const searchResultItem = nutritionDiv.closest('.search-result-item');
+                const servingInput = searchResultItem ? searchResultItem.querySelector('.serving-input') : null;
+                const servingAmount = servingInput ? parseFloat(servingInput.value) || 1 : 1;
+                
+                // Debug logging
+                console.log(`Adding food: ${foodName}, serving amount: ${servingAmount}, base calories: ${baseCalories}`);
+                console.log(`Found serving input:`, servingInput);
+                console.log(`Search result item:`, searchResultItem);
+                
+                const totalCalories = baseCalories * servingAmount;
+                const totalProtein = baseProtein * servingAmount;
+                const totalCarbs = baseCarbs * servingAmount;
+                const totalFat = baseFat * servingAmount;
+                
+                // Pre-fill the meal form with the selected food
+                document.getElementById('mealName').value = foodName;
+                document.getElementById('calories').value = totalCalories.toFixed(1);
+                document.getElementById('protein').value = totalProtein.toFixed(1);
+                document.getElementById('carbs').value = totalCarbs.toFixed(1);
+                document.getElementById('fat').value = totalFat.toFixed(1);
+                document.getElementById('mealDescription').value = `${servingAmount} ${servingUnit} (${baseServing})`;
+                
+                // Scroll to the meal form
+                document.querySelector('.add-meal-section').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+                
+                // Show success message
+                showSuccessMessage(`Added "${foodName}" (${servingAmount} ${servingUnit}) to meal form!`);
+                
+            } catch (error) {
+                console.error('Error adding food to meal:', error);
+                showErrorMessage('Error adding food to meal. Please try again.');
+            }
+        }
+
+        // Legacy function for backward compatibility
         function addFoodToMealWithServing(foodName, baseCalories, baseProtein, baseCarbs, baseFat, baseServing, servingAmount, servingUnit) {
             const totalCalories = baseCalories * servingAmount;
             const totalProtein = baseProtein * servingAmount;
