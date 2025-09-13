@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calorie Tracker - MyFitnessPal Style</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,11 +15,12 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #ffffff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000000;
             min-height: 100vh;
-            color: #1a1a1a;
+            color: #ffffff;
             line-height: 1.6;
+            font-weight: 300;
         }
 
         .container {
@@ -28,26 +32,29 @@
         .hero-section {
             text-align: center;
             padding: 80px 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: white;
             margin-bottom: 60px;
             border-radius: 20px;
+            border: 1px solid #333;
         }
 
         .hero-title {
             font-size: 3.5em;
-            font-weight: 700;
+            font-weight: 300;
             margin-bottom: 20px;
             line-height: 1.2;
+            letter-spacing: -0.02em;
         }
 
         .hero-subtitle {
             font-size: 1.3em;
             margin-bottom: 40px;
-            opacity: 0.9;
+            opacity: 0.8;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            font-weight: 300;
         }
 
         .cta-button {
@@ -72,17 +79,19 @@
 
         .features-section {
             padding: 60px 20px;
-            background: #f8f9fa;
+            background: #111111;
             border-radius: 20px;
             margin-bottom: 60px;
+            border: 1px solid #333;
         }
 
         .section-title {
             text-align: center;
             font-size: 2.5em;
-            font-weight: 700;
-            color: #1a1a1a;
+            font-weight: 300;
+            color: #ffffff;
             margin-bottom: 50px;
+            letter-spacing: -0.02em;
         }
 
         .features-grid {
@@ -92,16 +101,17 @@
         }
 
         .feature-card {
-            background: white;
+            background: #1a1a1a;
             padding: 40px 30px;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: 1px solid #333;
             transition: transform 0.3s ease;
         }
 
         .feature-card:hover {
             transform: translateY(-5px);
+            border-color: #555;
         }
 
         .feature-icon {
@@ -111,23 +121,24 @@
 
         .feature-title {
             font-size: 1.4em;
-            font-weight: 600;
-            color: #1a1a1a;
+            font-weight: 400;
+            color: #ffffff;
             margin-bottom: 15px;
         }
 
         .feature-description {
-            color: #666;
+            color: #cccccc;
             font-size: 1em;
             line-height: 1.6;
+            font-weight: 300;
         }
 
         .calories-section {
-            background: white;
+            background: #1a1a1a;
             border-radius: 15px;
             padding: 40px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #333;
             display: flex;
             align-items: center;
             gap: 40px;
@@ -135,15 +146,17 @@
 
         .calories-title {
             font-size: 2.5em;
-            font-weight: bold;
-            color: #2c3e50;
+            font-weight: 300;
+            color: #ffffff;
             margin-bottom: 10px;
+            letter-spacing: -0.02em;
         }
 
         .calories-formula {
-            color: #7f8c8d;
+            color: #cccccc;
             font-size: 1.1em;
             margin-bottom: 30px;
+            font-weight: 300;
         }
 
         .progress-container {
@@ -178,7 +191,7 @@
             position: absolute;
             width: 80%;
             height: 80%;
-            background: white;
+            background: #1a1a1a;
             border-radius: 50%;
         }
 
@@ -190,15 +203,16 @@
 
         .remaining-calories {
             font-size: 3em;
-            font-weight: bold;
-            color: #2c3e50;
+            font-weight: 300;
+            color: #ffffff;
             margin: 0;
         }
 
         .remaining-label {
             font-size: 1.2em;
-            color: #7f8c8d;
+            color: #cccccc;
             margin: 0;
+            font-weight: 300;
         }
 
         .calorie-breakdown {
@@ -212,8 +226,9 @@
             align-items: center;
             gap: 15px;
             padding: 15px;
-            background: #f8f9fa;
+            background: #2a2a2a;
             border-radius: 10px;
+            border: 1px solid #333;
         }
 
         .breakdown-icon {
@@ -227,14 +242,14 @@
 
         .breakdown-label {
             flex: 1;
-            color: #2c3e50;
-            font-weight: 500;
+            color: #ffffff;
+            font-weight: 300;
         }
 
         .breakdown-value {
             font-size: 1.3em;
-            font-weight: bold;
-            color: #2c3e50;
+            font-weight: 400;
+            color: #ffffff;
         }
 
         .goal-input {
@@ -246,39 +261,44 @@
 
         .goal-input input {
             padding: 8px 12px;
-            border: 2px solid #ecf0f1;
+            border: 2px solid #333;
             border-radius: 5px;
             width: 100px;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-weight: 300;
         }
 
         .goal-input button {
-            background: #3498db;
+            background: #ff6b35;
             color: white;
             border: none;
             padding: 8px 15px;
             border-radius: 5px;
             cursor: pointer;
             font-size: 0.9em;
+            font-weight: 300;
         }
 
         .goal-input button:hover {
-            background: #2980b9;
+            background: #e55a2b;
         }
 
         .app-section {
-            background: white;
+            background: #1a1a1a;
             border-radius: 20px;
             padding: 40px;
             margin-bottom: 60px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 1px solid #333;
         }
 
         .app-title {
             text-align: center;
             font-size: 2.5em;
-            font-weight: 700;
-            color: #1a1a1a;
+            font-weight: 300;
+            color: #ffffff;
             margin-bottom: 40px;
+            letter-spacing: -0.02em;
         }
 
         .main-content {
@@ -288,22 +308,24 @@
         }
 
         .add-meal-section {
-            background: #f8f9fa;
+            background: #2a2a2a;
             border-radius: 15px;
             padding: 30px;
+            border: 1px solid #333;
         }
 
         .meals-section {
-            background: #f8f9fa;
+            background: #2a2a2a;
             border-radius: 15px;
             padding: 30px;
+            border: 1px solid #333;
         }
 
         .section-title {
             font-size: 1.5em;
-            color: #1a1a1a;
+            color: #ffffff;
             margin-bottom: 20px;
-            font-weight: 600;
+            font-weight: 400;
         }
 
         .form-group {
@@ -313,24 +335,27 @@
         .form-group label {
             display: block;
             margin-bottom: 8px;
-            color: #2c3e50;
-            font-weight: 500;
+            color: #ffffff;
+            font-weight: 300;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 2px solid #ecf0f1;
+            border: 2px solid #333;
             border-radius: 8px;
             font-size: 1em;
             transition: border-color 0.3s ease;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-weight: 300;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #3498db;
+            border-color: #ff6b35;
         }
 
         .file-upload {
@@ -350,21 +375,22 @@
         .file-upload-label {
             display: block;
             padding: 12px;
-            border: 2px dashed #3498db;
+            border: 2px dashed #ff6b35;
             border-radius: 8px;
             text-align: center;
-            color: #3498db;
+            color: #ff6b35;
             cursor: pointer;
             transition: all 0.3s ease;
+            font-weight: 300;
         }
 
         .file-upload-label:hover {
-            background-color: #f8f9fa;
-            border-color: #2980b9;
+            background-color: #2a2a2a;
+            border-color: #e55a2b;
         }
 
         .btn {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
             color: white;
             border: none;
             padding: 12px 25px;
@@ -374,33 +400,34 @@
             transition: all 0.3s ease;
             width: 100%;
             margin-top: 10px;
+            font-weight: 300;
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
         }
 
         .btn-secondary {
-            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            background: linear-gradient(135deg, #666, #555);
         }
 
         .btn-secondary:hover {
-            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.4);
+            box-shadow: 0 5px 15px rgba(102, 102, 102, 0.4);
         }
 
         .meal-item {
-            background: #f8f9fa;
+            background: #333;
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 15px;
-            border-left: 4px solid #3498db;
+            border-left: 4px solid #ff6b35;
             transition: all 0.3s ease;
         }
 
         .meal-item:hover {
             transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left-color: #e55a2b;
         }
 
         .meal-header {
@@ -412,26 +439,28 @@
 
         .meal-name {
             font-size: 1.2em;
-            font-weight: bold;
-            color: #2c3e50;
+            font-weight: 400;
+            color: #ffffff;
         }
 
         .meal-calories {
-            background: #3498db;
+            background: #ff6b35;
             color: white;
             padding: 5px 12px;
             border-radius: 20px;
-            font-weight: bold;
+            font-weight: 400;
         }
 
         .meal-description {
-            color: #7f8c8d;
+            color: #cccccc;
             margin-bottom: 10px;
+            font-weight: 300;
         }
 
         .meal-time {
-            color: #95a5a6;
+            color: #999;
             font-size: 0.9em;
+            font-weight: 300;
         }
 
         .meal-photo {
@@ -450,6 +479,7 @@
             cursor: pointer;
             font-size: 0.8em;
             margin-top: 10px;
+            font-weight: 300;
         }
 
         .delete-btn:hover {
@@ -459,13 +489,13 @@
         .loading {
             display: none;
             text-align: center;
-            color: #3498db;
+            color: #ff6b35;
             margin: 20px 0;
         }
 
         .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #3498db;
+            border: 3px solid #333;
+            border-top: 3px solid #ff6b35;
             border-radius: 50%;
             width: 30px;
             height: 30px;
