@@ -12,10 +12,11 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #ffffff;
             min-height: 100vh;
-            color: #333;
+            color: #1a1a1a;
+            line-height: 1.6;
         }
 
         .container {
@@ -24,24 +25,101 @@
             padding: 20px;
         }
 
-        .header {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .hero-section {
             text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-bottom: 60px;
+            border-radius: 20px;
         }
 
-        .header h1 {
-            color: #2c3e50;
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .hero-title {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
         }
 
-        .header p {
-            color: #7f8c8d;
+        .hero-subtitle {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
             font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.3);
+        }
+
+        .features-section {
+            padding: 60px 20px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 50px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .feature-description {
+            color: #666;
+            font-size: 1em;
+            line-height: 1.6;
         }
 
         .calories-section {
@@ -187,32 +265,45 @@
             background: #2980b9;
         }
 
+        .app-section {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .app-title {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 40px;
+        }
+
         .main-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 40px;
         }
 
         .add-meal-section {
-            background: white;
+            background: #f8f9fa;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .meals-section {
-            background: white;
+            background: #f8f9fa;
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .section-title {
             font-size: 1.5em;
-            color: #2c3e50;
+            color: #1a1a1a;
             margin-bottom: 20px;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
+            font-weight: 600;
         }
 
         .form-group {
@@ -406,12 +497,21 @@
         }
 
         @media (max-width: 768px) {
-            .main-content {
-                grid-template-columns: 1fr;
+            .hero-title {
+                font-size: 2.5em;
             }
             
-            .header h1 {
-                font-size: 2em;
+            .hero-subtitle {
+                font-size: 1.1em;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .main-content {
+                grid-template-columns: 1fr;
             }
             
             .calories-section {
@@ -433,54 +533,91 @@
             .remaining-calories {
                 font-size: 2.5em;
             }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .hero-section {
+                padding: 60px 20px;
+            }
+            
+            .features-section {
+                padding: 40px 20px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <h1>🍎 Calorie Tracker</h1>
-            <p>Track your meals and stay healthy with AI-powered calorie estimation</p>
+        <div class="hero-section">
+            <h1 class="hero-title">Track Your Calories with AI</h1>
+            <p class="hero-subtitle">Transform your health journey with our intelligent calorie tracking app. Upload photos, get instant calorie estimates, and achieve your fitness goals.</p>
+            <a href="#app" class="cta-button">Start Tracking Now</a>
         </div>
 
-        <div class="calories-section">
-            <div>
-                <h2 class="calories-title">Calories</h2>
-                <p class="calories-formula">Remaining = Goal - Food</p>
-                
-                <div class="goal-input">
-                    <label>Daily Goal:</label>
-                    <input type="number" id="dailyGoal" value="1200" min="500" max="5000">
-                    <button onclick="updateGoal()">Update</button>
+        <div class="features-section">
+            <h2 class="section-title">Why Choose Our Calorie Tracker?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI-Powered Estimation</h3>
+                    <p class="feature-description">Simply upload a photo of your meal and our AI will instantly estimate the calories for you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 class="feature-title">Real-Time Progress</h3>
+                    <p class="feature-description">Track your daily progress with beautiful visualizations and detailed statistics.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Simple & Intuitive</h3>
+                    <p class="feature-description">Clean, MyFitnessPal-inspired interface that makes calorie tracking effortless.</p>
                 </div>
             </div>
+        </div>
+
+        <div id="app" class="app-section">
+            <h2 class="app-title">Your Calorie Tracker</h2>
             
-            <div class="progress-container">
-                <div class="circular-progress">
-                    <div class="progress-circle" id="progressCircle">
-                        <div class="progress-content">
-                            <div class="remaining-calories" id="remainingCalories">1200</div>
-                            <div class="remaining-label">Remaining</div>
+            <div class="calories-section">
+                <div>
+                    <h2 class="calories-title">Calories</h2>
+                    <p class="calories-formula">Remaining = Goal - Food</p>
+                    
+                    <div class="goal-input">
+                        <label>Daily Goal:</label>
+                        <input type="number" id="dailyGoal" value="1200" min="500" max="5000">
+                        <button onclick="updateGoal()">Update</button>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <div class="circular-progress">
+                        <div class="progress-circle" id="progressCircle">
+                            <div class="progress-content">
+                                <div class="remaining-calories" id="remainingCalories">1200</div>
+                                <div class="remaining-label">Remaining</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="calorie-breakdown">
+                        <div class="breakdown-item">
+                            <div class="breakdown-icon">🏁</div>
+                            <div class="breakdown-label">Base Goal</div>
+                            <div class="breakdown-value" id="baseGoal">1,200</div>
+                        </div>
+                        <div class="breakdown-item">
+                            <div class="breakdown-icon">🍽️</div>
+                            <div class="breakdown-label">Food</div>
+                            <div class="breakdown-value" id="foodCalories">0</div>
                         </div>
                     </div>
                 </div>
-                
-                <div class="calorie-breakdown">
-                    <div class="breakdown-item">
-                        <div class="breakdown-icon">🏁</div>
-                        <div class="breakdown-label">Base Goal</div>
-                        <div class="breakdown-value" id="baseGoal">1,200</div>
-                    </div>
-                    <div class="breakdown-item">
-                        <div class="breakdown-icon">🍽️</div>
-                        <div class="breakdown-label">Food</div>
-                        <div class="breakdown-value" id="foodCalories">0</div>
-                    </div>
-                </div>
             </div>
-        </div>
 
-        <div class="main-content">
+            <div class="main-content">
             <div class="add-meal-section">
                 <h2 class="section-title">➕ Add New Meal</h2>
                 
@@ -536,6 +673,7 @@
                     </p>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 
