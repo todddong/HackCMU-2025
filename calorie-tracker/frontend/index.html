@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracker - MyFitnessPal Style</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 1em;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .add-meal-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .meals-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .file-upload {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-upload input[type=file] {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-upload-label {
+            display: block;
+            padding: 12px;
+            border: 2px dashed #3498db;
+            border-radius: 8px;
+            text-align: center;
+            color: #3498db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-label:hover {
+            background-color: #f8f9fa;
+            border-color: #2980b9;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.4);
+        }
+
+        .meal-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .meal-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .meal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .meal-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .meal-calories {
+            background: #3498db;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .meal-description {
+            color: #7f8c8d;
+            margin-bottom: 10px;
+        }
+
+        .meal-time {
+            color: #95a5a6;
+            font-size: 0.9em;
+        }
+
+        .meal-photo {
+            width: 100%;
+            max-width: 200px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #3498db;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: #e74c3c;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        .success {
+            background: #27ae60;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🍎 Calorie Tracker</h1>
+            <p>Track your meals and stay healthy with AI-powered calorie estimation</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalCalories">0</div>
+                <div class="stat-label">Total Calories</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalMeals">0</div>
+                <div class="stat-label">Total Meals</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="avgCalories">0</div>
+                <div class="stat-label">Avg per Meal</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="add-meal-section">
+                <h2 class="section-title">➕ Add New Meal</h2>
+                
+                <div class="error" id="errorMessage"></div>
+                <div class="success" id="successMessage"></div>
+                
+                <form id="mealForm">
+                    <div class="form-group">
+                        <label for="mealName">Meal Name</label>
+                        <input type="text" id="mealName" name="name" required placeholder="e.g., Grilled Chicken Salad">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mealDescription">Description (Optional)</label>
+                        <textarea id="mealDescription" name="description" rows="3" placeholder="Describe your meal..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mealPhoto">Upload Photo</label>
+                        <div class="file-upload">
+                            <input type="file" id="mealPhoto" name="photo" accept="image/*">
+                            <label for="mealPhoto" class="file-upload-label">
+                                📷 Click to upload meal photo
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="calories">Calories</label>
+                        <input type="number" id="calories" name="calories" step="0.1" required placeholder="Enter calories">
+                    </div>
+
+                    <button type="button" class="btn btn-secondary" onclick="estimateCalories()">
+                        🤖 Estimate Calories from Photo
+                    </button>
+
+                    <button type="submit" class="btn">
+                        💾 Save Meal
+                    </button>
+                </form>
+
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Estimating calories...</p>
+                </div>
+            </div>
+
+            <div class="meals-section">
+                <h2 class="section-title">📋 Recent Meals</h2>
+                <div id="mealsList">
+                    <p style="text-align: center; color: #7f8c8d; margin-top: 50px;">
+                        No meals added yet. Add your first meal to get started!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let meals = [];
+        let stats = { total_calories: 0, total_meals: 0, average_calories: 0 };
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadMeals();
+            loadStats();
+            
+            // Form submission
+            document.getElementById('mealForm').addEventListener('submit', handleFormSubmit);
+            
+            // File input change
+            document.getElementById('mealPhoto').addEventListener('change', function(e) {
+                const label = document.querySelector('.file-upload-label');
+                if (e.target.files.length > 0) {
+                    label.textContent = `📷 ${e.target.files[0].name}`;
+                } else {
+                    label.textContent = '📷 Click to upload meal photo';
+                }
+            });
+        });
+
+        // Load meals from API
+        async function loadMeals() {
+            try {
+                const response = await fetch('/api/meals/');
+                meals = await response.json();
+                displayMeals();
+            } catch (error) {
+                console.error('Error loading meals:', error);
+                showError('Failed to load meals');
+            }
+        }
+
+        // Load statistics from API
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats/');
+                stats = await response.json();
+                updateStats();
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Update statistics display
+        function updateStats() {
+            document.getElementById('totalCalories').textContent = stats.total_calories;
+            document.getElementById('totalMeals').textContent = stats.total_meals;
+            document.getElementById('avgCalories').textContent = stats.average_calories;
+        }
+
+        // Display meals in the UI
+        function displayMeals() {
+            const mealsList = document.getElementById('mealsList');
+            
+            if (meals.length === 0) {
+                mealsList.innerHTML = '<p style="text-align: center; color: #7f8c8d; margin-top: 50px;">No meals added yet. Add your first meal to get started!</p>';
+                return;
+            }
+
+            mealsList.innerHTML = meals.map(meal => `
+                <div class="meal-item">
+                    <div class="meal-header">
+                        <div class="meal-name">${meal.name}</div>
+                        <div class="meal-calories">${meal.calories} cal</div>
+                    </div>
+                    ${meal.description ? `<div class="meal-description">${meal.description}</div>` : ''}
+                    <div class="meal-time">${new Date(meal.created_at).toLocaleString()}</div>
+                    ${meal.photo_url ? `<img src="${meal.photo_url}" alt="${meal.name}" class="meal-photo">` : ''}
+                    <button class="delete-btn" onclick="deleteMeal(${meal.id})">🗑️ Delete</button>
+                </div>
+            `).join('');
+        }
+
+        // Handle form submission
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('/api/meals/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    showSuccess('Meal added successfully!');
+                    e.target.reset();
+                    document.querySelector('.file-upload-label').textContent = '📷 Click to upload meal photo';
+                    loadMeals();
+                    loadStats();
+                } else {
+                    throw new Error('Failed to add meal');
+                }
+            } catch (error) {
+                console.error('Error adding meal:', error);
+                showError('Failed to add meal');
+            }
+        }
+
+        // Estimate calories from photo
+        async function estimateCalories() {
+            const photoInput = document.getElementById('mealPhoto');
+            const caloriesInput = document.getElementById('calories');
+            
+            if (!photoInput.files.length) {
+                showError('Please select a photo first');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('photo', photoInput.files[0]);
+
+            showLoading(true);
+
+            try {
+                const response = await fetch('/api/estimate-calories/', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    caloriesInput.value = result.estimated_calories;
+                    showSuccess(`Estimated: ${result.estimated_calories} calories - ${result.description}`);
+                } else {
+                    throw new Error('Failed to estimate calories');
+                }
+            } catch (error) {
+                console.error('Error estimating calories:', error);
+                showError('Failed to estimate calories');
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Delete meal
+        async function deleteMeal(mealId) {
+            if (!confirm('Are you sure you want to delete this meal?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/meals/${mealId}`, {
+                    method: 'DELETE'
+                });
+
+                if (response.ok) {
+                    showSuccess('Meal deleted successfully!');
+                    loadMeals();
+                    loadStats();
+                } else {
+                    throw new Error('Failed to delete meal');
+                }
+            } catch (error) {
+                console.error('Error deleting meal:', error);
+                showError('Failed to delete meal');
+            }
+        }
+
+        // Utility functions
+        function showLoading(show) {
+            document.getElementById('loading').style.display = show ? 'block' : 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        function showSuccess(message) {
+            const successDiv = document.getElementById('successMessage');
+            successDiv.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
