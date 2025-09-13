@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Calorie Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            color: #ffffff;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #1a1a1a;
+            border-radius: 15px;
+            border: 1px solid #333;
+        }
+
+        .logo {
+            font-size: 2em;
+            font-weight: 300;
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .welcome-text {
+            font-size: 1.1em;
+        }
+
+        .logout-btn {
+            padding: 10px 20px;
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .hero-section {
+            text-align: center;
+            padding: 80px 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            margin-bottom: 60px;
+            border-radius: 20px;
+            border: 1px solid #333;
+        }
+
+        .hero-title {
+            font-size: 3.5em;
+            font-weight: 300;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3em;
+            font-weight: 300;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .stats-section {
+            background: #1a1a1a;
+            padding: 60px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            margin-bottom: 60px;
+        }
+
+        .stats-title {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 300;
+            margin-bottom: 50px;
+            color: #ff6b35;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 30px;
+            background: #2d2d2d;
+            border-radius: 15px;
+            border: 1px solid #444;
+        }
+
+        .stat-number {
+            font-size: 3em;
+            font-weight: 600;
+            color: #ff6b35;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.8;
+        }
+
+        .meal-log-section {
+            background: #1a1a1a;
+            padding: 60px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 2.2em;
+            font-weight: 300;
+            margin-bottom: 40px;
+            color: #ff6b35;
+            text-align: center;
+        }
+
+        .meal-form {
+            background: #2d2d2d;
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid #444;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: #ff6b35;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #444;
+            border-radius: 10px;
+            background: #1a1a1a;
+            color: #ffffff;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #ff6b35, #e55a2b);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .meals-list {
+            background: #2d2d2d;
+            border-radius: 15px;
+            border: 1px solid #444;
+            overflow: hidden;
+        }
+
+        .meal-item {
+            padding: 25px;
+            border-bottom: 1px solid #444;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .meal-item:hover {
+            background: #333;
+        }
+
+        .meal-item:last-child {
+            border-bottom: none;
+        }
+
+        .meal-info h3 {
+            color: #ff6b35;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .meal-info p {
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        .meal-calories {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #ff6b35;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px;
+            opacity: 0.6;
+        }
+
+        .empty-state h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #ff6b35;
+        }
+
+        .empty-state p {
+            font-size: 1.1em;
+        }
+
+        .success-message {
+            background: #2d5a2d;
+            color: #4ade80;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .error-message {
+            background: #5a2d2d;
+            color: #ff6b6b;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .spinner {
+            border: 2px solid #333;
+            border-top: 2px solid #ff6b35;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5em;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">Calorie Tracker</div>
+            <div class="user-info">
+                <span class="welcome-text" id="welcomeText">Welcome, User!</span>
+                <a href="#" class="logout-btn" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <h1 class="hero-title">Your Calorie Dashboard</h1>
+            <p class="hero-subtitle">Track your meals, monitor your calories, and achieve your health goals</p>
+            <button class="cta-button" onclick="scrollToMealLog()">Start Tracking</button>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="stats-section">
+            <h2 class="stats-title">Today's Overview</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalCalories">0</div>
+                    <div class="stat-label">Calories Consumed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="totalMeals">0</div>
+                    <div class="stat-label">Meals Logged</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">2,000</div>
+                    <div class="stat-label">Daily Goal</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="remainingCalories">2,000</div>
+                    <div class="stat-label">Remaining</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Meal Log Section -->
+        <div class="meal-log-section" id="meal-log">
+            <h2 class="section-title">Log Your Meals</h2>
+            
+            <!-- Messages -->
+            <div class="success-message" id="successMessage">
+                Meal logged successfully! 🎉
+            </div>
+            <div class="error-message" id="errorMessage">
+                Error logging meal. Please try again.
+            </div>
+
+            <!-- Meal Form -->
+            <div class="meal-form">
+                <form id="mealForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="mealName">Meal Name</label>
+                            <input type="text" id="mealName" name="mealName" placeholder="e.g., Grilled Chicken Salad" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="calories">Calories</label>
+                            <input type="number" id="calories" name="calories" placeholder="e.g., 350" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description (Optional)</label>
+                        <textarea id="description" name="description" rows="3" placeholder="Add any additional details about your meal..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Log Meal</button>
+                </form>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Loading meals...</p>
+            </div>
+
+            <!-- Meals List -->
+            <div class="meals-list">
+                <div class="empty-state" id="emptyState">
+                    <h3>No meals logged yet</h3>
+                    <p>Start by logging your first meal above!</p>
+                </div>
+                <div id="mealsList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let meals = [];
+        let totalCalories = 0;
+
+        // DOM elements
+        const welcomeText = document.getElementById('welcomeText');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const mealForm = document.getElementById('mealForm');
+        const mealsList = document.getElementById('mealsList');
+        const emptyState = document.getElementById('emptyState');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
+        const loading = document.getElementById('loading');
+
+        // Check authentication on page load
+        async function checkAuth() {
+            const token = localStorage.getItem('access_token');
+            if (!token) {
+                window.location.href = '/login';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    currentUser = await response.json();
+                    welcomeText.textContent = `Welcome, ${currentUser.username}!`;
+                    await loadMeals();
+                    await loadStats();
+                } else {
+                    localStorage.removeItem('access_token');
+                    window.location.href = '/login';
+                }
+            } catch (error) {
+                console.error('Auth check failed:', error);
+                localStorage.removeItem('access_token');
+                window.location.href = '/login';
+            }
+        }
+
+        // Load meals
+        async function loadMeals() {
+            loading.style.display = 'block';
+            try {
+                const token = localStorage.getItem('access_token');
+                const response = await fetch('/api/meals/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    meals = await response.json();
+                    updateMealsList();
+                } else {
+                    console.error('Failed to load meals');
+                }
+            } catch (error) {
+                console.error('Error loading meals:', error);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // Load stats
+        async function loadStats() {
+            try {
+                const token = localStorage.getItem('access_token');
+                const response = await fetch('/api/stats/', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const stats = await response.json();
+                    updateStats(stats);
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Update meals list
+        function updateMealsList() {
+            if (meals.length === 0) {
+                emptyState.style.display = 'block';
+                mealsList.innerHTML = '';
+                return;
+            }
+            
+            emptyState.style.display = 'none';
+            mealsList.innerHTML = meals.map(meal => `
+                <div class="meal-item">
+                    <div class="meal-info">
+                        <h3>${meal.name}</h3>
+                        <p>${meal.description || 'No description'} • ${new Date(meal.created_at).toLocaleString()}</p>
+                    </div>
+                    <div class="meal-calories">${meal.calories} cal</div>
+                </div>
+            `).join('');
+        }
+
+        // Update stats
+        function updateStats(stats) {
+            document.getElementById('totalCalories').textContent = stats.total_calories;
+            document.getElementById('totalMeals').textContent = stats.total_meals;
+            document.getElementById('remainingCalories').textContent = Math.max(0, 2000 - stats.total_calories);
+        }
+
+        // Form submission
+        mealForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(mealForm);
+            const mealData = {
+                name: formData.get('mealName'),
+                calories: parseFloat(formData.get('calories')),
+                description: formData.get('description')
+            };
+            
+            try {
+                const token = localStorage.getItem('access_token');
+                const response = await fetch('/api/meals/', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    showSuccessMessage();
+                    mealForm.reset();
+                    await loadMeals();
+                    await loadStats();
+                } else {
+                    showErrorMessage();
+                }
+            } catch (error) {
+                console.error('Error logging meal:', error);
+                showErrorMessage();
+            }
+        });
+
+        // Show success message
+        function showSuccessMessage() {
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // Show error message
+        function showErrorMessage() {
+            errorMessage.style.display = 'block';
+            successMessage.style.display = 'none';
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        // Logout
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.removeItem('access_token');
+            window.location.href = '/login';
+        });
+
+        // Scroll to meal log section
+        function scrollToMealLog() {
+            document.getElementById('meal-log').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initialize
+        checkAuth();
+    </script>
+</body>
+</html>
