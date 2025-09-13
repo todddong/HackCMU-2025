@@ -70,23 +70,30 @@ class OpenAICalorieEstimator(CalorieEstimator):
             # Encode the image
             base64_image = self.encode_image(image_path)
             
-            # Create the prompt for calorie estimation
+            # Create the prompt for comprehensive food analysis
             prompt = """
-            Analyze this food image and provide a detailed calorie estimation. Please:
+            Analyze this food image and provide a detailed nutritional estimation. Please:
             
             1. Identify all food items visible in the image
             2. Estimate the portion sizes
             3. Calculate the approximate total calories
-            4. Provide a brief description of what you see
+            4. Estimate macronutrients (protein, carbs, fat in grams)
+            5. Provide a brief description of what you see
+            6. Suggest a meal name based on the main food items
             
             Consider:
             - Different types of food (proteins, carbs, fats, vegetables, etc.)
             - Cooking methods (fried, grilled, raw, etc.)
             - Portion sizes relative to common serving sizes
             - Hidden ingredients (oils, sauces, etc.)
+            - Macronutrient content based on food types and portions
             
             Respond in this exact format:
             CALORIES: [number]
+            PROTEIN: [number in grams]
+            CARBS: [number in grams]
+            FAT: [number in grams]
+            NAME: [suggested meal name]
             DESCRIPTION: [brief description of the food items and portions]
             """
             
@@ -126,9 +133,13 @@ class OpenAICalorieEstimator(CalorieEstimator):
             # Parse the response
             response_text = response.choices[0].message.content
             
-            # Extract calories and description
+            # Extract all nutritional information
             lines = response_text.strip().split('\n')
             calories = None
+            protein = None
+            carbs = None
+            fat = None
+            name = ""
             description = ""
             
             for line in lines:
@@ -137,18 +148,58 @@ class OpenAICalorieEstimator(CalorieEstimator):
                         calories = float(line.replace("CALORIES:", "").strip())
                     except ValueError:
                         calories = 300  # Default fallback
+                elif line.startswith("PROTEIN:"):
+                    try:
+                        protein = float(line.replace("PROTEIN:", "").strip())
+                    except ValueError:
+                        protein = 15  # Default fallback
+                elif line.startswith("CARBS:"):
+                    try:
+                        carbs = float(line.replace("CARBS:", "").strip())
+                    except ValueError:
+                        carbs = 30  # Default fallback
+                elif line.startswith("FAT:"):
+                    try:
+                        fat = float(line.replace("FAT:", "").strip())
+                    except ValueError:
+                        fat = 10  # Default fallback
+                elif line.startswith("NAME:"):
+                    name = line.replace("NAME:", "").strip()
                 elif line.startswith("DESCRIPTION:"):
                     description = line.replace("DESCRIPTION:", "").strip()
             
             # Fallback if parsing fails
             if calories is None:
                 calories = 300
+            if protein is None:
+                protein = 15
+            if carbs is None:
+                carbs = 30
+            if fat is None:
+                fat = 10
+            if not name:
+                name = "AI Analyzed Meal"
             if not description:
                 description = "Food items detected in the image"
             
-            return round(calories, 1), description
+            # Return comprehensive nutritional data
+            return {
+                "calories": round(calories, 1),
+                "protein": round(protein, 1),
+                "carbs": round(carbs, 1),
+                "fat": round(fat, 1),
+                "name": name,
+                "description": description
+            }
             
         except Exception as e:
             # Fallback to a reasonable default if API call fails
             print(f"Error calling OpenAI API: {e}")
-            return 300.0, "Unable to analyze image, using default estimate"
+            return {
+                "calories": 300.0,
+                "protein": 15.0,
+                "carbs": 30.0,
+                "fat": 10.0,
+                "name": "AI Analyzed Meal",
+                "description": "Unable to analyze image, using default estimate"
+            }

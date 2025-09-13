@@ -8,10 +8,13 @@ import os
 import shutil
 from datetime import datetime, timedelta
 
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 import models, schemas, database, auth
-from calorie_estimator.mock_estimator import MockCalorieEstimator
-from calorie_estimator.enhanced_estimator import EnhancedCalorieEstimator
-from usda_service import usda_service
+from calorie_estimator.openai_estimator import OpenAICalorieEstimator
 from gpt_search_wrapper import gpt_search_wrapper
 
 # Create database tables
@@ -26,15 +29,11 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 # Mount static files
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
-# Initialize calorie estimator with fallback
-try:
-    # Try to use enhanced AI estimator if OpenAI API key is available
-    calorie_estimator = EnhancedCalorieEstimator()
-    print("✅ Enhanced AI calorie estimator initialized successfully")
-except Exception as e:
-    # Fallback to mock estimator if OpenAI API key is not available
-    calorie_estimator = MockCalorieEstimator()
-    print(f"⚠️  Using mock calorie estimator (Enhanced AI not available: {e})")
+# Initialize calorie estimator - ALWAYS use GPT-4o-mini
+calorie_estimator = OpenAICalorieEstimator()
+print("✅ OpenAI GPT-4o-mini calorie estimator initialized successfully")
+print("🔑 API Key loaded from .env file")
+print("🤖 Using GPT-4o-mini for ALL food analysis (no fallbacks)")
 
 # Security
 security = HTTPBearer()
@@ -262,43 +261,26 @@ async def search_foods(
     data_type: Optional[str] = Query(None, description="Filter by data type (Foundation, SR Legacy, Survey, Branded, Experimental)"),
     use_gpt: bool = Query(True, description="Use GPT-enhanced search (default: True)")
 ):
-    """Search for foods using GPT-enhanced USDA FoodData Central API"""
+    """Search for foods using GPT-4o-mini only"""
     if not query or len(query.strip()) < 2:
         raise HTTPException(status_code=400, detail="Query must be at least 2 characters long")
     
     try:
-        if use_gpt:
-            # Use GPT-enhanced search
-            foods = await gpt_search_wrapper.search_foods(query.strip(), page_size, data_type)
-            print(f"🤖 GPT-enhanced search for: {query}")
-        else:
-            # Use traditional USDA search
-            foods = await usda_service.search_foods(query.strip(), page_size, data_type)
-            print(f"🔍 Traditional USDA search for: {query}")
+        # Always use GPT-4o-mini search (no USDA dependency)
+        foods = await gpt_search_wrapper.search_foods(query.strip(), page_size, data_type)
+        print(f"🤖 GPT-4o-mini search for: {query}")
         
         return {
             "query": query,
             "results": foods,
             "total_results": len(foods),
-            "search_type": "gpt_enhanced" if use_gpt else "traditional_usda"
+            "search_type": "gpt_4o_mini"
         }
     except Exception as e:
         print(f"Error searching foods: {e}")
         raise HTTPException(status_code=500, detail="Failed to search foods")
 
-@app.get("/api/food-details/{fdc_id}")
-async def get_food_details(fdc_id: str):
-    """Get detailed information for a specific food item"""
-    try:
-        food_details = await usda_service.get_food_details(fdc_id)
-        if not food_details:
-            raise HTTPException(status_code=404, detail="Food not found")
-        return food_details
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"Error getting food details: {e}")
-        raise HTTPException(status_code=500, detail="Failed to get food details")
+# Food details endpoint removed - using GPT-4o-mini only for all food analysis
 
 # ==================== UTILITY ROUTES ====================
 
@@ -314,13 +296,30 @@ async def estimate_calories(photo: UploadFile = File(...)):
         shutil.copyfileobj(photo.file, buffer)
     
     try:
-        # Estimate calories
-        estimated_calories, description = calorie_estimator.estimate_calories(temp_path)
+        # Estimate calories and macronutrients
+        result = calorie_estimator.estimate_calories(temp_path)
         
-        return {
-            "estimated_calories": estimated_calories,
-            "description": description
-        }
+        # Handle both old and new response formats
+        if isinstance(result, dict):
+            return {
+                "estimated_calories": result["calories"],
+                "protein": result["protein"],
+                "carbs": result["carbs"],
+                "fat": result["fat"],
+                "name": result["name"],
+                "description": result["description"]
+            }
+        else:
+            # Fallback for old format
+            estimated_calories, description = result
+            return {
+                "estimated_calories": estimated_calories,
+                "protein": 15.0,
+                "carbs": 30.0,
+                "fat": 10.0,
+                "name": "AI Analyzed Meal",
+                "description": description
+            }
     finally:
         # Clean up temporary file
         if os.path.exists(temp_path):

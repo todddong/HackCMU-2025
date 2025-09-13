@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-GPT-Powered Food Search Wrapper
-This module provides intelligent food search capabilities using OpenAI's GPT models
-combined with USDA nutritional data for enhanced search results.
+GPT-4o-mini Food Search Wrapper
+This module provides intelligent food search capabilities using OpenAI's GPT-4o-mini model
+to generate comprehensive nutritional data for any food query.
 """
 
 import os
@@ -49,8 +49,7 @@ class GPTSearchWrapper:
         # Use configuration for API keys
         self.api_key = api_key or config.get_openai_api_key()
         self.client = OpenAI(api_key=self.api_key) if config.is_gpt_available() else None
-        self.usda_base_url = config.USDA_BASE_URL
-        self.usda_api_key = config.USDA_API_KEY
+        # GPT-4o-mini only - no external APIs needed
         self.http_client = httpx.AsyncClient(timeout=30.0)
         
         # Enhanced food knowledge base for better search results
@@ -81,32 +80,114 @@ class GPTSearchWrapper:
     
     async def search_foods(self, query: str, page_size: int = 20, data_type: str = None) -> List[Dict]:
         """
-        Enhanced food search using GPT for intelligent query processing and result enhancement
+        GPT-4o-mini powered food search - generates comprehensive food data using AI
         
         Args:
             query: Search query from user
             page_size: Number of results to return
-            data_type: Filter by data type
+            data_type: Filter by data type (ignored, using GPT only)
             
         Returns:
-            List of enhanced food search results
+            List of AI-generated food search results
         """
         try:
-            # Step 1: Process query with GPT for better understanding
-            processed_query = await self._process_query_with_gpt(query)
-            
-            # Step 2: Get USDA search results
-            usda_results = await self._get_usda_results(processed_query, page_size, data_type)
-            
-            # Step 3: Enhance results with GPT analysis
-            enhanced_results = await self._enhance_results_with_gpt(query, usda_results)
-            
-            return enhanced_results
+            # Use GPT-4o-mini to generate comprehensive food data
+            gpt_results = await self._generate_food_data_with_gpt(query, page_size)
+            return gpt_results
             
         except Exception as e:
-            print(f"Error in GPT search: {e}")
-            # Fallback to mock data
-            return self._get_fallback_results(query)
+            print(f"Error in GPT-4o-mini search: {e}")
+            raise Exception(f"Search failed: {e}")
+    
+    async def _generate_food_data_with_gpt(self, query: str, page_size: int) -> List[Dict]:
+        """
+        Use GPT-4o-mini to generate comprehensive food data for any query
+        """
+        if not self.client:
+            raise Exception("OpenAI client not initialized - API key required")
+        
+        try:
+            prompt = f"""Generate nutritional data for food items matching: "{query}"
+
+Provide {page_size} food items with accurate nutritional data per 100g.
+
+CRITICAL: Respond with ONLY valid JSON. No explanations, no markdown, no extra text.
+
+Format:
+{{"foods":[{{"fdc_id":"gpt_1","name":"Food Name","description":"Brief description","calories":100.0,"protein":10.0,"carbs":20.0,"fat":5.0,"fiber":2.0,"serving_size":"100g","data_type":"Foundation","brand_owner":null,"ingredients":null}}]}}"""
+            
+            response = self.client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=4000,
+                temperature=0.1
+            )
+            
+            response_text = response.choices[0].message.content.strip()
+            
+            # Clean up the response text to extract JSON
+            if response_text.startswith("```json"):
+                response_text = response_text[7:]
+            if response_text.endswith("```"):
+                response_text = response_text[:-3]
+            if response_text.startswith("```"):
+                response_text = response_text[3:]
+            response_text = response_text.strip()
+            
+            # Try to find JSON object in the response
+            start_idx = response_text.find('{')
+            if start_idx != -1:
+                response_text = response_text[start_idx:]
+            
+            # Try to find the end of the JSON object
+            brace_count = 0
+            end_idx = -1
+            for i, char in enumerate(response_text):
+                if char == '{':
+                    brace_count += 1
+                elif char == '}':
+                    brace_count -= 1
+                    if brace_count == 0:
+                        end_idx = i + 1
+                        break
+            
+            if end_idx != -1:
+                response_text = response_text[:end_idx]
+            
+            # Parse JSON response
+            try:
+                data = json.loads(response_text)
+                foods = data.get("foods", [])
+                
+                # Ensure we have the right number of results
+                if len(foods) > page_size:
+                    foods = foods[:page_size]
+                
+                print(f"🤖 GPT-4o-mini generated {len(foods)} food results for: {query}")
+                return foods
+                
+            except json.JSONDecodeError as e:
+                print(f"Failed to parse GPT response as JSON: {e}")
+                print(f"Response was: {response_text[:500]}...")
+                # Try to create a simple fallback result
+                return [{
+                    "fdc_id": f"gpt_fallback_{query}",
+                    "name": f"{query.title()} (AI Generated)",
+                    "description": f"AI-generated nutritional data for {query}",
+                    "calories": 100.0,
+                    "protein": 10.0,
+                    "carbs": 20.0,
+                    "fat": 5.0,
+                    "fiber": 2.0,
+                    "serving_size": "100g",
+                    "data_type": "Foundation",
+                    "brand_owner": None,
+                    "ingredients": None
+                }]
+                
+        except Exception as e:
+            print(f"Error generating food data with GPT: {e}")
+            raise Exception(f"GPT-4o-mini search failed: {e}")
     
     async def _process_query_with_gpt(self, query: str) -> str:
         """

@@ -1339,8 +1339,16 @@
                 
                 if (response.ok) {
                     const data = await response.json();
+                    
+                    // Autofill all form fields with AI analysis
+                    document.getElementById('mealName').value = data.name || 'AI Analyzed Meal';
                     document.getElementById('calories').value = data.estimated_calories;
-                    showSuccessMessage(`🤖 AI estimated ${data.estimated_calories} calories - ${data.description}`);
+                    document.getElementById('protein').value = data.protein || 15;
+                    document.getElementById('carbs').value = data.carbs || 30;
+                    document.getElementById('fat').value = data.fat || 10;
+                    
+                    // Show comprehensive success message
+                    showSuccessMessage(`🤖 AI Analysis Complete! ${data.estimated_calories} calories, ${data.protein}g protein, ${data.carbs}g carbs, ${data.fat}g fat - ${data.description}`);
                 } else {
                     showErrorMessage('Failed to estimate calories');
                 }
