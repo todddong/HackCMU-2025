@@ -1,14 +1,15 @@
-from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, Depends, HTTPException, UploadFile, File, Form, Query
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse, FileResponse
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
 import os
 import shutil
 from datetime import datetime
 
 import models, schemas, database
 from calorie_estimator.mock_estimator import MockCalorieEstimator
+from usda_service import usda_service
 
 # Create database tables
 models.Base.metadata.create_all(bind=database.engine)
@@ -34,6 +35,9 @@ async def read_root():
 async def create_meal(
     name: str = Form(...),
     calories: float = Form(...),
+    protein: float = Form(0.0),
+    carbs: float = Form(0.0),
+    fat: float = Form(0.0),
     description: str = Form(None),
     photo: UploadFile = File(None),
     db: Session = Depends(database.get_db)
@@ -54,6 +58,9 @@ async def create_meal(
     db_meal = models.Meal(
         name=name,
         calories=calories,
+        protein=protein,
+        carbs=carbs,
+        fat=fat,
         photo_path=photo_path,
         description=description
     )
@@ -98,6 +105,9 @@ async def get_meals(db: Session = Depends(database.get_db)):
             "id": meal.id,
             "name": meal.name,
             "calories": meal.calories,
+            "protein": meal.protein,
+            "carbs": meal.carbs,
+            "fat": meal.fat,
             "description": meal.description,
             "photo_path": meal.photo_path,
             "created_at": meal.created_at,
@@ -123,24 +133,68 @@ async def delete_meal(meal_id: int, db: Session = Depends(database.get_db)):
     
     return {"message": "Meal deleted successfully"}
 
+@app.get("/api/search-foods/")
+async def search_foods(
+    query: str = Query(..., description="Food search query"),
+    page_size: int = Query(20, description="Number of results to return"),
+    data_type: Optional[str] = Query(None, description="Filter by data type (Foundation, SR Legacy, Survey, Branded, Experimental)")
+):
+    """Search for foods using USDA FoodData Central API"""
+    if not query or len(query.strip()) < 2:
+        raise HTTPException(status_code=400, detail="Query must be at least 2 characters long")
+    
+    try:
+        foods = await usda_service.search_foods(query.strip(), page_size, data_type)
+        return {
+            "query": query,
+            "results": foods,
+            "total_results": len(foods)
+        }
+    except Exception as e:
+        print(f"Error searching foods: {e}")
+        raise HTTPException(status_code=500, detail="Failed to search foods")
+
+@app.get("/api/food-details/{fdc_id}")
+async def get_food_details(fdc_id: str):
+    """Get detailed information for a specific food item"""
+    try:
+        food_details = await usda_service.get_food_details(fdc_id)
+        if not food_details:
+            raise HTTPException(status_code=404, detail="Food not found")
+        return food_details
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error getting food details: {e}")
+        raise HTTPException(status_code=500, detail="Failed to get food details")
+
 @app.get("/api/stats/")
 async def get_stats(db: Session = Depends(database.get_db)):
-    """Get calorie statistics"""
+    """Get calorie and macro statistics"""
     meals = db.query(models.Meal).all()
     
     if not meals:
         return {
             "total_calories": 0,
+            "total_protein": 0,
+            "total_carbs": 0,
+            "total_fat": 0,
             "total_meals": 0,
             "average_calories": 0
         }
     
     total_calories = sum(meal.calories for meal in meals)
+    total_protein = sum(meal.protein for meal in meals)
+    total_carbs = sum(meal.carbs for meal in meals)
+    total_fat = sum(meal.fat for meal in meals)
     total_meals = len(meals)
     average_calories = total_calories / total_meals
     
     return {
         "total_calories": round(total_calories, 1),
+        "total_protein": round(total_protein, 1),
+        "total_carbs": round(total_carbs, 1),
+        "total_fat": round(total_fat, 1),
         "total_meals": total_meals,
         "average_calories": round(average_calories, 1)
     }

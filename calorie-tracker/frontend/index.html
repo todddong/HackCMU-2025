@@ -165,6 +165,58 @@
             gap: 40px;
         }
 
+        .main-progress {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .macro-progress {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .macro-circle {
+            display: flex;
+            justify-content: center;
+        }
+
+        .circular-progress.small {
+            width: 120px;
+            height: 120px;
+        }
+
+        .macro-value {
+            font-size: 1.8em;
+            font-weight: 400;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        .macro-label {
+            font-size: 0.9em;
+            color: #cccccc;
+            margin: 0;
+            font-weight: 300;
+        }
+
+        /* Protein circle - green color */
+        #proteinCircle {
+            background: conic-gradient(
+                #4CAF50 0deg 0deg,
+                #ecf0f1 0deg 360deg
+            );
+        }
+
+        /* Carbs circle - orange color */
+        #carbsCircle {
+            background: conic-gradient(
+                #ff6b35 0deg 0deg,
+                #ecf0f1 0deg 360deg
+            );
+        }
+
         .circular-progress {
             position: relative;
             width: 200px;
@@ -555,6 +607,17 @@
                 gap: 30px;
             }
             
+            .main-progress {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .macro-progress {
+                flex-direction: row;
+                justify-content: center;
+                gap: 30px;
+            }
+            
             .circular-progress {
                 width: 150px;
                 height: 150px;
@@ -574,6 +637,293 @@
             
             .features-section {
                 padding: 40px 20px;
+            }
+        }
+
+        /* Search Section Styles */
+        .search-section {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 60px;
+            border: 1px solid #333;
+        }
+
+        .search-description {
+            text-align: center;
+            color: #cccccc;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #333;
+            border-radius: 50px;
+            background: #2a2a2a;
+            color: #ffffff;
+            font-size: 1em;
+            font-weight: 300;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .search-input::placeholder {
+            color: #888;
+        }
+
+        .search-button {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .search-button:hover {
+            background: #e55a2b;
+            transform: translateY(-2px);
+        }
+
+        .search-filters {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 2px solid #333;
+            border-radius: 25px;
+            background: #2a2a2a;
+            color: #ffffff;
+            font-size: 0.9em;
+            font-weight: 300;
+            cursor: pointer;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .search-loading {
+            text-align: center;
+            padding: 40px;
+            color: #cccccc;
+        }
+
+        .search-error {
+            text-align: center;
+            padding: 20px;
+            background: #2a1a1a;
+            border: 1px solid #ff4444;
+            border-radius: 10px;
+            color: #ff6666;
+            margin: 20px 0;
+        }
+
+        .search-results {
+            margin-top: 30px;
+        }
+
+        .search-results h3 {
+            color: #ffffff;
+            font-size: 1.5em;
+            font-weight: 400;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .results-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .search-result-item {
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            border-color: #ff6b35;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.2);
+        }
+
+        .food-name {
+            font-size: 1.2em;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+
+        .food-brand {
+            font-size: 0.9em;
+            color: #ff6b35;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .food-nutrition {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .nutrition-item {
+            text-align: center;
+            padding: 8px;
+            background: #1a1a1a;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .nutrition-label {
+            font-size: 0.8em;
+            color: #888;
+            margin-bottom: 4px;
+            font-weight: 300;
+        }
+
+        .nutrition-value {
+            font-size: 1.1em;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .food-serving {
+            font-size: 0.9em;
+            color: #cccccc;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .food-type {
+            display: inline-block;
+            background: #333;
+            color: #ffffff;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        .add-to-meal-btn {
+            background: #ff6b35;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .add-to-meal-btn:hover {
+            background: #e55a2b;
+            transform: translateY(-1px);
+        }
+
+        .add-to-meal-btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .serving-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            border: 1px solid #333;
+        }
+
+        .serving-label {
+            color: #cccccc;
+            font-size: 0.9em;
+            font-weight: 300;
+            white-space: nowrap;
+        }
+
+        .serving-input {
+            width: 80px;
+            padding: 5px 8px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background: #2a2a2a;
+            color: #ffffff;
+            font-size: 0.9em;
+            text-align: center;
+        }
+
+        .serving-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .serving-unit {
+            color: #888;
+            font-size: 0.8em;
+            font-weight: 300;
+        }
+
+        .nutrition-recalculated {
+            background: #1a2a1a;
+            border: 1px solid #4a8a4a;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+
+        .nutrition-recalculated .nutrition-value {
+            color: #4a8a4a;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-button {
+                border-radius: 10px;
+            }
+            
+            .food-nutrition {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
     </style>
@@ -623,25 +973,51 @@
                 </div>
                 
                 <div class="progress-container">
-                    <div class="circular-progress">
-                        <div class="progress-circle" id="progressCircle">
-                            <div class="progress-content">
-                                <div class="remaining-calories" id="remainingCalories">1200</div>
-                                <div class="remaining-label">Remaining</div>
+                    <div class="main-progress">
+                        <div class="circular-progress">
+                            <div class="progress-circle" id="progressCircle">
+                                <div class="progress-content">
+                                    <div class="remaining-calories" id="remainingCalories">1200</div>
+                                    <div class="remaining-label">Remaining</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="calorie-breakdown">
+                            <div class="breakdown-item">
+                                <div class="breakdown-icon">🏁</div>
+                                <div class="breakdown-label">Base Goal</div>
+                                <div class="breakdown-value" id="baseGoal">1,200</div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="breakdown-icon">🍽️</div>
+                                <div class="breakdown-label">Food</div>
+                                <div class="breakdown-value" id="foodCalories">0</div>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="calorie-breakdown">
-                        <div class="breakdown-item">
-                            <div class="breakdown-icon">🏁</div>
-                            <div class="breakdown-label">Base Goal</div>
-                            <div class="breakdown-value" id="baseGoal">1,200</div>
+                    <div class="macro-progress">
+                        <div class="macro-circle">
+                            <div class="circular-progress small">
+                                <div class="progress-circle" id="proteinCircle">
+                                    <div class="progress-content">
+                                        <div class="macro-value" id="proteinValue">0</div>
+                                        <div class="macro-label">Protein (g)</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="breakdown-item">
-                            <div class="breakdown-icon">🍽️</div>
-                            <div class="breakdown-label">Food</div>
-                            <div class="breakdown-value" id="foodCalories">0</div>
+                        
+                        <div class="macro-circle">
+                            <div class="circular-progress small">
+                                <div class="progress-circle" id="carbsCircle">
+                                    <div class="progress-content">
+                                        <div class="macro-value" id="carbsValue">0</div>
+                                        <div class="macro-label">Carbs (g)</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -680,6 +1056,21 @@
                         <input type="number" id="calories" name="calories" step="0.1" required placeholder="Enter calories">
                     </div>
 
+                    <div class="form-group">
+                        <label for="protein">Protein (g)</label>
+                        <input type="number" id="protein" name="protein" step="0.1" value="0" placeholder="Enter protein in grams">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="carbs">Carbs (g)</label>
+                        <input type="number" id="carbs" name="carbs" step="0.1" value="0" placeholder="Enter carbs in grams">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fat">Fat (g)</label>
+                        <input type="number" id="fat" name="fat" step="0.1" value="0" placeholder="Enter fat in grams">
+                    </div>
+
                     <button type="button" class="btn btn-secondary" onclick="estimateCalories()">
                         🤖 Estimate Calories from Photo
                     </button>
@@ -692,6 +1083,44 @@
                 <div class="loading" id="loading">
                     <div class="spinner"></div>
                     <p>Estimating calories...</p>
+                </div>
+            </div>
+
+            <!-- Food Search Section -->
+            <div class="search-section">
+                <h2 class="section-title">🔍 Search Foods</h2>
+                <p class="search-description">Search USDA FoodData Central for accurate nutritional information</p>
+                
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="foodSearchInput" placeholder="Search for foods (e.g., apple, chicken, pizza)..." class="search-input">
+                        <button type="button" id="searchButton" class="search-button">🔍 Search</button>
+                    </div>
+                    
+                    <div class="search-filters">
+                        <select id="dataTypeFilter" class="filter-select">
+                            <option value="">All Food Types</option>
+                            <option value="Foundation">Foundation Foods</option>
+                            <option value="SR Legacy">SR Legacy Foods</option>
+                            <option value="Survey">Survey Foods (FNDDS)</option>
+                            <option value="Branded">Branded Foods</option>
+                            <option value="Experimental">Experimental Foods</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="search-loading" id="searchLoading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Searching USDA database...</p>
+                </div>
+
+                <div class="search-error" id="searchError" style="display: none;">
+                    <p>❌ Error searching foods. Please try again.</p>
+                </div>
+
+                <div class="search-results" id="searchResults" style="display: none;">
+                    <h3>Search Results</h3>
+                    <div class="results-list" id="resultsList"></div>
                 </div>
             </div>
 
@@ -758,16 +1187,24 @@
         // Update statistics display
         function updateStats() {
             const foodCalories = stats.total_calories;
+            const totalProtein = stats.total_protein || 0;
+            const totalCarbs = stats.total_carbs || 0;
             const remaining = Math.max(0, dailyGoal - foodCalories);
             const progressPercentage = Math.min(100, (foodCalories / dailyGoal) * 100);
             
-            // Update circular progress bar
+            // Update main circular progress bar
             updateCircularProgress(progressPercentage);
+            
+            // Update macro circles
+            updateMacroCircle('proteinCircle', totalProtein, 150); // 150g protein goal
+            updateMacroCircle('carbsCircle', totalCarbs, 200); // 200g carbs goal
             
             // Update breakdown values
             document.getElementById('baseGoal').textContent = dailyGoal.toLocaleString();
             document.getElementById('foodCalories').textContent = foodCalories.toLocaleString();
             document.getElementById('remainingCalories').textContent = remaining.toLocaleString();
+            document.getElementById('proteinValue').textContent = totalProtein.toFixed(1);
+            document.getElementById('carbsValue').textContent = totalCarbs.toFixed(1);
         }
 
         // Update circular progress bar
@@ -777,6 +1214,23 @@
             
             progressCircle.style.background = `conic-gradient(
                 #3498db 0deg ${degrees}deg,
+                #ecf0f1 ${degrees}deg 360deg
+            )`;
+        }
+
+        // Update macro circular progress bar
+        function updateMacroCircle(circleId, current, goal) {
+            const progressCircle = document.getElementById(circleId);
+            const percentage = Math.min(100, (current / goal) * 100);
+            const degrees = (percentage / 100) * 360;
+            
+            let color = '#4CAF50'; // Default green for protein
+            if (circleId === 'carbsCircle') {
+                color = '#ff6b35'; // Orange for carbs
+            }
+            
+            progressCircle.style.background = `conic-gradient(
+                ${color} 0deg ${degrees}deg,
                 #ecf0f1 ${degrees}deg 360deg
             )`;
         }
@@ -924,6 +1378,243 @@
             setTimeout(() => {
                 successDiv.style.display = 'none';
             }, 3000);
+        }
+
+        // Food Search Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('foodSearchInput');
+            const searchButton = document.getElementById('searchButton');
+            const dataTypeFilter = document.getElementById('dataTypeFilter');
+            const searchLoading = document.getElementById('searchLoading');
+            const searchError = document.getElementById('searchError');
+            const searchResults = document.getElementById('searchResults');
+            const resultsList = document.getElementById('resultsList');
+
+            // Search button click event
+            searchButton.addEventListener('click', performSearch);
+
+            // Enter key press event
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    performSearch();
+                }
+            });
+
+            // Filter change event
+            dataTypeFilter.addEventListener('change', function() {
+                if (searchInput.value.trim()) {
+                    performSearch();
+                }
+            });
+
+            async function performSearch() {
+                const query = searchInput.value.trim();
+                if (!query) {
+                    showSearchError('Please enter a search term');
+                    return;
+                }
+
+                if (query.length < 2) {
+                    showSearchError('Search term must be at least 2 characters long');
+                    return;
+                }
+
+                showSearchLoading();
+                hideSearchError();
+                hideSearchResults();
+
+                try {
+                    const dataType = dataTypeFilter.value;
+                    const params = new URLSearchParams({
+                        query: query,
+                        page_size: 20
+                    });
+                    
+                    if (dataType) {
+                        params.append('data_type', dataType);
+                    }
+
+                    const response = await fetch(`/api/search-foods/?${params}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json();
+                    displaySearchResults(data.results, query);
+                    
+                } catch (error) {
+                    console.error('Search error:', error);
+                    showSearchError('Failed to search foods. Please try again.');
+                } finally {
+                    hideSearchLoading();
+                }
+            }
+
+            function displaySearchResults(foods, query) {
+                if (!foods || foods.length === 0) {
+                    showSearchError(`No foods found for "${query}"`);
+                    return;
+                }
+
+                resultsList.innerHTML = '';
+                
+                foods.forEach(food => {
+                    const foodItem = createFoodItem(food);
+                    resultsList.appendChild(foodItem);
+                });
+
+                showSearchResults();
+            }
+
+            function createFoodItem(food) {
+                const item = document.createElement('div');
+                item.className = 'search-result-item';
+                
+                const brandInfo = food.brand_owner ? `<div class="food-brand">${food.brand_owner}</div>` : '';
+                const dataType = food.data_type ? `<span class="food-type">${food.data_type}</span>` : '';
+                
+                // Extract serving size number and unit
+                const servingMatch = food.serving_size.match(/(\d+(?:\.\d+)?)\s*(.*)/);
+                const defaultServing = servingMatch ? parseFloat(servingMatch[1]) : 1;
+                const servingUnit = servingMatch ? servingMatch[2] : 'serving';
+                
+                item.innerHTML = `
+                    ${dataType}
+                    <div class="food-name">${food.name}</div>
+                    ${brandInfo}
+                    <div class="food-serving">Base serving: ${food.serving_size}</div>
+                    
+                    <div class="serving-controls">
+                        <span class="serving-label">Serving amount:</span>
+                        <input type="number" class="serving-input" value="${defaultServing}" min="0.1" step="0.1" 
+                               onchange="recalculateNutrition(this, ${JSON.stringify(food).replace(/"/g, '&quot;')})"
+                               oninput="recalculateNutrition(this, ${JSON.stringify(food).replace(/"/g, '&quot;')})">
+                        <span class="serving-unit">${servingUnit}</span>
+                    </div>
+                    
+                    <div class="food-nutrition nutrition-recalculated" id="nutrition-${food.fdc_id}">
+                        <div class="nutrition-item">
+                            <div class="nutrition-label">Calories</div>
+                            <div class="nutrition-value">${(food.calories * defaultServing).toFixed(1)}</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="nutrition-label">Protein</div>
+                            <div class="nutrition-value">${(food.protein * defaultServing).toFixed(1)}g</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="nutrition-label">Carbs</div>
+                            <div class="nutrition-value">${(food.carbs * defaultServing).toFixed(1)}g</div>
+                        </div>
+                        <div class="nutrition-item">
+                            <div class="nutrition-label">Fat</div>
+                            <div class="nutrition-value">${(food.fat * defaultServing).toFixed(1)}g</div>
+                        </div>
+                    </div>
+                    
+                    <button class="add-to-meal-btn" onclick="addFoodToMealWithServing('${food.name}', ${food.calories}, ${food.protein}, ${food.carbs}, ${food.fat}, '${food.serving_size}', ${defaultServing}, '${servingUnit}')">
+                        ➕ Add to Meal
+                    </button>
+                `;
+                
+                return item;
+            }
+
+            function addFoodToMeal(foodName, calories, servingSize) {
+                // Pre-fill the meal form with the selected food
+                document.getElementById('mealName').value = foodName;
+                document.getElementById('calories').value = calories;
+                document.getElementById('mealDescription').value = `Serving: ${servingSize}`;
+                
+                // Scroll to the meal form
+                document.querySelector('.add-meal-section').scrollIntoView({ 
+                    behavior: 'smooth' 
+                });
+                
+                // Show success message
+                showSuccessMessage(`Added "${foodName}" to meal form!`);
+            }
+
+            function showSearchLoading() {
+                searchLoading.style.display = 'block';
+            }
+
+            function hideSearchLoading() {
+                searchLoading.style.display = 'none';
+            }
+
+            function showSearchError(message) {
+                searchError.querySelector('p').textContent = message;
+                searchError.style.display = 'block';
+            }
+
+            function hideSearchError() {
+                searchError.style.display = 'none';
+            }
+
+            function showSearchResults() {
+                searchResults.style.display = 'block';
+            }
+
+            function hideSearchResults() {
+                searchResults.style.display = 'none';
+            }
+        });
+
+        // Global function to recalculate nutrition based on serving amount
+        function recalculateNutrition(input, food) {
+            const servingAmount = parseFloat(input.value) || 1;
+            const nutritionDiv = document.getElementById(`nutrition-${food.fdc_id}`);
+            
+            if (nutritionDiv) {
+                const nutritionValues = nutritionDiv.querySelectorAll('.nutrition-value');
+                if (nutritionValues.length >= 4) {
+                    nutritionValues[0].textContent = (food.calories * servingAmount).toFixed(1);
+                    nutritionValues[1].textContent = (food.protein * servingAmount).toFixed(1) + 'g';
+                    nutritionValues[2].textContent = (food.carbs * servingAmount).toFixed(1) + 'g';
+                    nutritionValues[3].textContent = (food.fat * servingAmount).toFixed(1) + 'g';
+                }
+            }
+        }
+
+        // Global function to add food to meal with serving amount (called from search results)
+        function addFoodToMealWithServing(foodName, baseCalories, baseProtein, baseCarbs, baseFat, baseServing, servingAmount, servingUnit) {
+            const totalCalories = baseCalories * servingAmount;
+            const totalProtein = baseProtein * servingAmount;
+            const totalCarbs = baseCarbs * servingAmount;
+            const totalFat = baseFat * servingAmount;
+            
+            // Pre-fill the meal form with the selected food
+            document.getElementById('mealName').value = foodName;
+            document.getElementById('calories').value = totalCalories.toFixed(1);
+            document.getElementById('protein').value = totalProtein.toFixed(1);
+            document.getElementById('carbs').value = totalCarbs.toFixed(1);
+            document.getElementById('fat').value = totalFat.toFixed(1);
+            document.getElementById('mealDescription').value = `${servingAmount} ${servingUnit} (${baseServing})`;
+            
+            // Scroll to the meal form
+            document.querySelector('.add-meal-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+            
+            // Show success message
+            showSuccessMessage(`Added "${foodName}" (${servingAmount} ${servingUnit}) to meal form!`);
+        }
+
+        // Global function to add food to meal (called from search results) - legacy function
+        function addFoodToMeal(foodName, calories, servingSize) {
+            // Pre-fill the meal form with the selected food
+            document.getElementById('mealName').value = foodName;
+            document.getElementById('calories').value = calories;
+            document.getElementById('mealDescription').value = `Serving: ${servingSize}`;
+            
+            // Scroll to the meal form
+            document.querySelector('.add-meal-section').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+            
+            // Show success message
+            showSuccessMessage(`Added "${foodName}" to meal form!`);
         }
     </script>
 </body>
