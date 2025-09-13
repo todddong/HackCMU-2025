@@ -17,7 +17,7 @@ from gpt_search_wrapper import gpt_search_wrapper
 # Create database tables
 models.Base.metadata.create_all(bind=database.engine)
 
-app = FastAPI(title="Calorie Tracker API", version="1.0.0")
+app = FastAPI(title="nutriAI API", version="1.0.0")
 
 # Create uploads directory
 UPLOAD_DIR = "uploads"

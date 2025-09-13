@@ -1,4 +1,4 @@
-# Calorie Tracker MVP
+# nutriAI MVP
 
 A MyFitnessPal-style calorie tracking web application with AI-powered calorie estimation from food photos.
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Configuration file for the Calorie Tracker application
+Configuration file for the nutriAI application
 This file contains all configuration settings including API keys and feature flags.
 """
 
